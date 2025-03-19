@@ -1,0 +1,210 @@
+﻿@page "/"
+@using BlazorApp.Model
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<PageTitle>Home</PageTitle>
+
+<h1 class="text-primary text-center">Bible</h1>
+
+@if (books is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul class="list-unstyled">
+        @foreach (var book in books)
+        {
+            <li>
+                <div class="container text-center mt-1 w-50">
+                    <BookButton text=@book.name OnClick="() => FetchBook(book.id)" />
+                </div>
+                @if (expandedBook.Equals(book.id) && chapters!=null)
+                {
+                    <div class="container mt-2">
+                        <div class="row">
+                            @for (int i = 1; i <= @chapters.Count; i++)
+                            {
+                                int chapterIndex = i;
+                                <div class="col-2 p-1">
+                                    <button @onclick="() => FetchChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
+                                </div>
+                                @if (expandedChapter == i && verses!=null)
+                                {
+                                    <div id="prev_button" class="container w-full text-center mt-2 mb-2">
+                                        <button @onclick="() => SetPrevChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Prev </button>
+                                    </div>
+
+                                    <pre id="displayed_verse" class="fs-5 fw-light text-justify bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+                                        @GetVerses()
+                                    </pre>
+
+                                    <div id="next_button" class="container w-full text-center mt-2 mb-2">
+                                        <button @onclick="() => SetNextChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Next </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </li>
+        }
+    </ul>
+}
+
+@code{
+    private IJSObjectReference? module;
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import",
+                "./Components/Pages/Home.razor.js");
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
+
+    private async Task ScrollToPrevButton(){
+        if(module!=null){
+            await module.InvokeVoidAsync("scrollToPrevButton");
+        }
+    } 
+
+    [Inject] 
+    private HttpClient Http { get; set; } = default!;
+    private List<Book>? books;
+    private List<Chapter>? chapters;
+    private List<Verse>? verses;
+    private string expandedBook = "";
+    private int expandedChapter = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchBible();
+    }
+    private void SetBook(string book_id)
+    {
+        expandedChapter = 0;
+        if (expandedBook.Equals(book_id))
+            expandedBook = "";
+        else
+            expandedBook = book_id;
+    }
+    private void SetChapter(int index)
+    {
+        if (expandedChapter == index)
+            expandedChapter = 0;
+        else
+            expandedChapter = index;
+    }
+    private async Task FetchBible(){
+        try
+        {
+            books = await Http.GetFromJsonAsync<List<Book>>("http://localhost:5120/api/bible");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+        }
+    }
+    private async Task FetchBook(string book_id){
+        try
+        {
+            chapters = await Http.GetFromJsonAsync<List<Chapter>>("http://localhost:5120/api/bible/"+book_id);
+            SetBook(book_id); 
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+        }
+    }
+    private async Task FetchChapter(string book_id, int chapter){
+        Console.WriteLine("Fetch Verses");
+        try
+        {
+            Console.WriteLine("http://localhost:5120/api/bible/"+book_id+"/"+chapter);
+            verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/"+book_id+"/"+chapter);
+            SetChapter(chapter);
+            await ScrollToPrevButton();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+        }
+    }
+    private string GetVerses(){
+        string text = "";
+        if(verses!=null){
+            foreach(var verse in verses){
+                text+=ToSuperscript(verse.verse)+" ";
+                text+=verse.text;
+            }
+        }
+        else{
+            text="Error al retornar los versos";
+        }
+        return text;
+    }
+    private static string ToSuperscript(int number)
+    {
+        var superscriptDigits = new Dictionary<char, char>
+        {
+            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
+            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
+        };
+
+        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
+    }
+    private async Task SetPrevChapter(string current_book_id, int current_chapter){
+        try{
+            if(current_chapter > 1){
+            await FetchChapter(current_book_id, current_chapter-1);
+            }
+            else{
+                string book_id = GetPrevBook(current_book_id);
+                await FetchBook(book_id);
+                await FetchChapter(book_id, chapters!.Count);
+            }
+        }
+        catch(ArgumentOutOfRangeException e){
+            Console.WriteLine(e.Message);
+        } 
+    }
+    private string GetPrevBook(string book_id){
+        int current = books!.FindIndex(b => b.id == book_id);
+        return books[current - 1].id;
+    }
+    private async Task SetNextChapter(string current_book_id, int current_chapter){
+        try{
+            if(current_chapter < chapters!.Count){
+            await FetchChapter(current_book_id, current_chapter+1);
+            }
+            else{
+                string book_id = GetNextBook(current_book_id);
+                await FetchBook(book_id);
+                await FetchChapter(book_id, 1);
+            }
+        }
+        catch(ArgumentOutOfRangeException e){
+            Console.WriteLine(e.Message);
+        }
+    }
+    private string GetNextBook(string book_id){
+        int current = books!.FindIndex(b => b.id == book_id);
+        return books[current + 1].id;
+    }
+}

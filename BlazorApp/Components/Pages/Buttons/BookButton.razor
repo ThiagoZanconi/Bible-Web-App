@@ -1,0 +1,25 @@
+@using static BlazorApp.Components.Pages.Home
+<style>
+    .btn-custom {
+        border: 2px solid blue;  /* Borde azul */
+        border-radius: 20px;     /* Bordes redondos */
+        color: blue;             /* Texto azul */
+        background-color: white; /* Fondo blanco */
+        transition: 0.3s;        /* Efecto suave */
+    }
+
+    .btn-custom:hover {
+        background-color: blue; /* Fondo azul al hacer hover */
+        color: white;           /* Texto blanco al hacer hover */
+    }
+</style>
+<button @onclick="OnClick" class="btn btn-outline-primary rounded-pill w-100 h-100" >@text</button>
+
+
+@code{
+    [Parameter]
+    public string text {get; set;} = "";
+
+    [Parameter] 
+    public EventCallback OnClick { get; set; }
+}
