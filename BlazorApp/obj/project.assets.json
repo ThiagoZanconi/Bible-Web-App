@@ -663,11 +663,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitHub\\Front-End-Net\\BlazorApp\\BlazorApp.csproj",
+      "projectUniqueName": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\BlazorApp.csproj",
       "projectName": "BlazorApp",
-      "projectPath": "D:\\GitHub\\Front-End-Net\\BlazorApp\\BlazorApp.csproj",
+      "projectPath": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\BlazorApp.csproj",
       "packagesPath": "C:\\Users\\thiag\\.nuget\\packages\\",
-      "outputPath": "D:\\GitHub\\Front-End-Net\\BlazorApp\\obj\\",
+      "outputPath": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\thiag\\AppData\\Roaming\\NuGet\\NuGet.Config"
