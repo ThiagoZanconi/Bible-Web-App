@@ -32,10 +32,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xCdXR0b25zXEJvb2tCdXR0b24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GitHub/Bible-Web-App/BlazorApp/Components/Pages/Collections.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2xsZWN0aW9ucy5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/GitHub/Bible-Web-App/BlazorApp/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -67,3 +63,7 @@ build_metadata.AdditionalFiles.CssScope = b-qgsvw684bo
 [D:/GitHub/Bible-Web-App/BlazorApp/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-g8o6n169oq
+
+[D:/GitHub/Bible-Web-App/BlazorApp/Components/Pages/Collections.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2xsZWN0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-68zmu6l0lg

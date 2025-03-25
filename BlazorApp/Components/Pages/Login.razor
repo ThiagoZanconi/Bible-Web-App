@@ -60,14 +60,15 @@
                 }
                 Console.WriteLine("Token recibido: " + token);
             }
-            if(response.StatusCode == System.Net.HttpStatusCode.NotFound){
-                statusCode = 404;
-                Console.WriteLine("Credenciales incorrectas");
-            }
-            else{
-                statusCode = 500;
-                Console.WriteLine("Error de autenticacion");
-            }
+            else
+                if(response.StatusCode == System.Net.HttpStatusCode.NotFound){
+                    statusCode = 404;
+                    Console.WriteLine("Credenciales incorrectas");
+                }
+                else{
+                    statusCode = 500;
+                    Console.WriteLine("Error de autenticacion");
+                }
         }
         catch (Exception ex)
         {

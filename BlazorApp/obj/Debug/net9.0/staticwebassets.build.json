@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VPKTBGA25vfO3zN5nmJf8tKpI7+48dO9HGV12VSQM/s=",
+  "Hash": "SvCi9CJUZ0wHwxmlSiVBSV0wFh3dLO9CfcxYrxLNJsU=",
   "Source": "BlazorApp",
   "BasePath": "_content/BlazorApp",
   "Mode": "Default",
@@ -689,12 +689,12 @@
       "OriginalItemSpec": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Identity": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-wftzvqoezb.gz",
+      "Identity": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-z7p6a4xweg.gz",
       "SourceId": "BlazorApp",
       "SourceType": "Computed",
       "ContentRoot": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/BlazorApp",
-      "RelativePath": "BlazorApp#[.{fingerprint=wftzvqoezb}]?.styles.css.gz",
+      "RelativePath": "BlazorApp#[.{fingerprint=z7p6a4xweg}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -703,8 +703,8 @@
       "RelatedAsset": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\bundle\\BlazorApp.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "cmpp49awil",
-      "Integrity": "DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0=",
+      "Fingerprint": "flnyk9vlby",
+      "Integrity": "Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\bundle\\BlazorApp.styles.css"
@@ -1151,12 +1151,12 @@
       "OriginalItemSpec": "C:\\Users\\thiag\\.nuget\\packages\\blazorstrap\\5.2.103.122024\\staticwebassets\\blazorstrap.min.js"
     },
     {
-      "Identity": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-3xi2k74w27.gz",
+      "Identity": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-ibgr8pacpi.gz",
       "SourceId": "BlazorApp",
       "SourceType": "Computed",
       "ContentRoot": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/BlazorApp",
-      "RelativePath": "BlazorApp#[.{fingerprint=3xi2k74w27}]!.bundle.scp.css.gz",
+      "RelativePath": "BlazorApp#[.{fingerprint=ibgr8pacpi}]!.bundle.scp.css.gz",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Alternative",
@@ -1165,8 +1165,8 @@
       "RelatedAsset": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "jdx8y5cmmx",
-      "Integrity": "Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s=",
+      "Fingerprint": "ip3omh17sv",
+      "Integrity": "Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css"
@@ -1312,8 +1312,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "wftzvqoezb",
-      "Integrity": "zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE=",
+      "Fingerprint": "z7p6a4xweg",
+      "Integrity": "0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\bundle\\BlazorApp.styles.css"
@@ -1333,8 +1333,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "3xi2k74w27",
-      "Integrity": "RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU=",
+      "Fingerprint": "ibgr8pacpi",
+      "Integrity": "XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css"
@@ -3698,13 +3698,13 @@
       ]
     },
     {
-      "Route": "BlazorApp.3xi2k74w27.bundle.scp.css",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-3xi2k74w27.gz",
+      "Route": "BlazorApp.bundle.scp.css",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-ibgr8pacpi.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000564652739"
+          "Quality": "0.000548546352"
         }
       ],
       "ResponseHeaders": [
@@ -3714,19 +3714,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1770"
+          "Value": "1822"
         },
         {
           "Name": "ETag",
-          "Value": "\"Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s=\""
+          "Value": "\"Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Encoding",
@@ -3742,26 +3742,18 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU=\""
+          "Value": "W/\"XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4=\""
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "3xi2k74w27"
-        },
-        {
-          "Name": "label",
-          "Value": "BlazorApp.bundle.scp.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU="
+          "Value": "sha256-XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4="
         }
       ]
     },
     {
-      "Route": "BlazorApp.3xi2k74w27.bundle.scp.css",
+      "Route": "BlazorApp.bundle.scp.css",
       "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3771,7 +3763,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5962"
+          "Value": "6110"
         },
         {
           "Name": "Content-Type",
@@ -3779,11 +3771,156 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU=\""
+          "Value": "\"XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4="
+        }
+      ]
+    },
+    {
+      "Route": "BlazorApp.bundle.scp.css.gz",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-ibgr8pacpi.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1822"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc="
+        }
+      ]
+    },
+    {
+      "Route": "BlazorApp.ibgr8pacpi.bundle.scp.css",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-ibgr8pacpi.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000548546352"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1822"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ibgr8pacpi"
+        },
+        {
+          "Name": "label",
+          "Value": "BlazorApp.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4="
+        }
+      ]
+    },
+    {
+      "Route": "BlazorApp.ibgr8pacpi.bundle.scp.css",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6110"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3793,7 +3930,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "3xi2k74w27"
+          "Value": "ibgr8pacpi"
         },
         {
           "Name": "label",
@@ -3801,13 +3938,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU="
+          "Value": "sha256-XjdN/QDInMQWfZngc98mBxqF71mEt7OwiGV6Z01aBe4="
         }
       ]
     },
     {
-      "Route": "BlazorApp.3xi2k74w27.bundle.scp.css.gz",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-3xi2k74w27.gz",
+      "Route": "BlazorApp.ibgr8pacpi.bundle.scp.css.gz",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-ibgr8pacpi.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3816,7 +3953,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1770"
+          "Value": "1822"
         },
         {
           "Name": "Content-Type",
@@ -3824,11 +3961,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s=\""
+          "Value": "\"Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3846,7 +3983,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "3xi2k74w27"
+          "Value": "ibgr8pacpi"
         },
         {
           "Name": "label",
@@ -3854,155 +3991,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s="
-        }
-      ]
-    },
-    {
-      "Route": "BlazorApp.bundle.scp.css",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-3xi2k74w27.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000564652739"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1770"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU="
-        }
-      ]
-    },
-    {
-      "Route": "BlazorApp.bundle.scp.css",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "5962"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-RxzvDsUUuQM4NmgZRlF8Dk3va2k4vl6/eUzVwJvoImU="
-        }
-      ]
-    },
-    {
-      "Route": "BlazorApp.bundle.scp.css.gz",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\wo77s772mi-3xi2k74w27.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1770"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-Cc9U18hrSBLMmC+mjkOqeO9H1ROWQap7snz2UNdGp3s="
+          "Value": "sha256-Ok2r3QnwSm6LlVwMZ6PYzBW7CCZ0Hi7PaldxJLRYchc="
         }
       ]
     },
     {
       "Route": "BlazorApp.styles.css",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-wftzvqoezb.gz",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-z7p6a4xweg.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000549450549"
+          "Quality": "0.000534188034"
         }
       ],
       "ResponseHeaders": [
@@ -4012,15 +4012,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1819"
+          "Value": "1871"
         },
         {
           "Name": "ETag",
-          "Value": "\"DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0=\""
+          "Value": "\"Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4040,7 +4040,7 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE=\""
+          "Value": "W/\"0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4=\""
         },
         {
           "Name": "Link",
@@ -4050,7 +4050,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE="
+          "Value": "sha256-0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4="
         }
       ]
     },
@@ -4069,7 +4069,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6112"
+          "Value": "6260"
         },
         {
           "Name": "Content-Type",
@@ -4077,11 +4077,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE=\""
+          "Value": "\"0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Link",
@@ -4091,13 +4091,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE="
+          "Value": "sha256-0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4="
         }
       ]
     },
     {
       "Route": "BlazorApp.styles.css.gz",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-wftzvqoezb.gz",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-z7p6a4xweg.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4106,7 +4106,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1819"
+          "Value": "1871"
         },
         {
           "Name": "Content-Type",
@@ -4114,11 +4114,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0=\""
+          "Value": "\"Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4136,18 +4136,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0="
+          "Value": "sha256-Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE="
         }
       ]
     },
     {
-      "Route": "BlazorApp.wftzvqoezb.styles.css",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-wftzvqoezb.gz",
+      "Route": "BlazorApp.z7p6a4xweg.styles.css",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-z7p6a4xweg.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000549450549"
+          "Quality": "0.000534188034"
         }
       ],
       "ResponseHeaders": [
@@ -4157,15 +4157,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1819"
+          "Value": "1871"
         },
         {
           "Name": "ETag",
-          "Value": "\"DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0=\""
+          "Value": "\"Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4185,7 +4185,7 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE=\""
+          "Value": "W/\"0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4=\""
         },
         {
           "Name": "Link",
@@ -4195,11 +4195,11 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "wftzvqoezb"
+          "Value": "z7p6a4xweg"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE="
+          "Value": "sha256-0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4="
         },
         {
           "Name": "label",
@@ -4208,7 +4208,7 @@
       ]
     },
     {
-      "Route": "BlazorApp.wftzvqoezb.styles.css",
+      "Route": "BlazorApp.z7p6a4xweg.styles.css",
       "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\bundle\\BlazorApp.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -4222,7 +4222,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6112"
+          "Value": "6260"
         },
         {
           "Name": "Content-Type",
@@ -4230,11 +4230,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE=\""
+          "Value": "\"0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Link",
@@ -4244,11 +4244,11 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "wftzvqoezb"
+          "Value": "z7p6a4xweg"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-zKaYSMYBLThiE2rIT9aIhpwmRTrumC+joa/2/xwFHdE="
+          "Value": "sha256-0VCZvUm7kDWH94ppa4K+PZ23oa0jS+B+0bXdEp1PCX4="
         },
         {
           "Name": "label",
@@ -4257,8 +4257,8 @@
       ]
     },
     {
-      "Route": "BlazorApp.wftzvqoezb.styles.css.gz",
-      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-wftzvqoezb.gz",
+      "Route": "BlazorApp.z7p6a4xweg.styles.css.gz",
+      "AssetFile": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\compressed\\io2m3ndci8-z7p6a4xweg.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4267,7 +4267,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1819"
+          "Value": "1871"
         },
         {
           "Name": "Content-Type",
@@ -4275,11 +4275,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0=\""
+          "Value": "\"Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 19 Feb 2025 14:49:35 GMT"
+          "Value": "Tue, 25 Mar 2025 14:58:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4297,7 +4297,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "wftzvqoezb"
+          "Value": "z7p6a4xweg"
         },
         {
           "Name": "label",
@@ -4305,7 +4305,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-DMqSdlFBrWrKd4fyS++YHyilCNamNrtWVLpTqV3YQu0="
+          "Value": "sha256-Dcw1X4oi4ZSH31+fp1MK0ax61hFZHfeuww/aCNnfMgE="
         }
       ]
     },

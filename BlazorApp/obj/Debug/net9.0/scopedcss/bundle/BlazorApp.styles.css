@@ -206,3 +206,8 @@ main[b-qgsvw684bo] {
         overflow-y: auto;
     }
 }
+/* _content/BlazorApp/Components/Pages/Collections.razor.rz.scp.css */
+.btn:focus[b-68zmu6l0lg] {
+    outline: none;
+    box-shadow: none;
+  }

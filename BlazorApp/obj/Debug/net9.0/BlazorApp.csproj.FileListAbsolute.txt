@@ -257,8 +257,6 @@ D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\opd9y4aud5-0j3bgjx
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\8o9rbqevse-lf8n579tj3.gz
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\pzed3m8xip-10v83wk5fb.gz
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\ywd8rf29oo-soy3cwhzex.gz
-D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\io2m3ndci8-wftzvqoezb.gz
-D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\wo77s772mi-3xi2k74w27.gz
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\staticwebassets.build.json
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\staticwebassets.development.json
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\staticwebassets.build.endpoints.json
@@ -274,3 +272,6 @@ D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\refint\BlazorApp.dll
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\BlazorApp.pdb
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\BlazorApp.genruntimeconfig.cache
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\ref\BlazorApp.dll
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\scopedcss\Components\Pages\Collections.razor.rz.scp.css
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\io2m3ndci8-z7p6a4xweg.gz
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\wo77s772mi-ibgr8pacpi.gz
