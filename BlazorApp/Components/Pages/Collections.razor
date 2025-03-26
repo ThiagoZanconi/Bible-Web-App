@@ -1,3 +1,52 @@
 @page "/collections"
+@rendermode InteractiveServer
+@using BlazorApp.Components.Pages.CollectionsComponents
+@using BlazorApp.Model
+@using BlazorApp.model
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<button class="btn btn-outline-success text-dark focus-ring focus-ring-dark mx-auto w-100 border-3">+</button>
+@if (selectedComponent is not null)
+{
+        <DynamicComponent Type="selectedComponent.Type"
+            Parameters="selectedComponent.Parameters" />
+}
+
+@code{
+    private ComponentMetadata? selectedComponent;
+    private Dictionary<string, ComponentMetadata> Components =>
+        new()
+        {
+            [nameof(CreateCollectionButton)] = new ComponentMetadata()
+            {
+                Type = typeof(CreateCollectionButton),
+                Name = "Create Collection Button Pressed",
+                Parameters = { [nameof(CreateCollectionButton.OnClickCallback)] =
+                    EventCallback.Factory.Create<Type>(this, SetComponent) }
+            },
+            [nameof(CreatingCollectionComponent)] = new ComponentMetadata()
+            {
+                Type = typeof(CreatingCollectionComponent),
+                Name = "Virgin Galactic",
+                Parameters = { [nameof(CreatingCollectionComponent.OnClickCallback)] =
+                    EventCallback.Factory.Create<Type>(this, SetComponent) }
+            }
+        };
+
+    private void SetComponent(Type e)
+    {
+        Console.WriteLine("SetComponent");
+        string key = e.Name; // Obtener la clave correcta del diccionario
+        if (Components.TryGetValue(key, out var metadata))
+        {
+            selectedComponent = metadata;
+        }
+        else
+        {
+            selectedComponent = null; // O manejar el error de otra manera
+        }
+    }
+    protected override void OnInitialized()
+    {
+        selectedComponent ??= Components.Values.FirstOrDefault();
+    }
+}

@@ -1,0 +1,11 @@
+<button class="btn btn-outline-success text-dark focus-ring focus-ring-dark mx-auto w-100 border-3" @onclick=SetCreateCollection>+</button>
+
+@code{
+    [Parameter]
+    public EventCallback<Type> OnClickCallback {get; set;}
+
+    public async Task SetCreateCollection()
+    {
+        await OnClickCallback.InvokeAsync(typeof(CreatingCollectionComponent));
+    }
+}

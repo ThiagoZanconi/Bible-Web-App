@@ -1,0 +1,36 @@
+<div>     
+    <EditForm Model="@modelo" OnValidSubmit="@SaveCollection" class="needs-validation"> 
+        <DataAnnotationsValidator />
+        <InputText type="text" class="form-control" required  placeholder="Collection Name" @bind-Value="modelo.Nombre" />
+        <div>
+            <div>
+                <button type="submit" class="btn btn-primary mx-auto" @onclick="SaveCollection">
+                    Save
+                </button>
+            </div>
+            <div>
+                <button class="btn btn-danger mx-auto" @onclick="CancelCollection">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </EditForm>   
+</div>
+
+@code{
+
+    [Parameter]
+    public EventCallback<Type> OnClickCallback {get; set;}
+    private async void SaveCollection(){
+        await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
+    }
+
+    private async void CancelCollection(){
+        await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
+    }
+    private Modelo modelo = new Modelo();
+    public class Modelo
+    {
+        public string Nombre { get; set; } = string.Empty;
+    }
+}
