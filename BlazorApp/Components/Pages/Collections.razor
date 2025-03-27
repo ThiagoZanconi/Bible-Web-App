@@ -3,6 +3,7 @@
 @using BlazorApp.Components.Pages.CollectionsComponents
 @using BlazorApp.Model
 @using BlazorApp.model
+@using System.Net.Http.Headers
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 @if (selectedComponent is not null)
@@ -10,8 +11,22 @@
         <DynamicComponent Type="selectedComponent.Type"
             Parameters="selectedComponent.Parameters" />
 }
+@if(collections!=null){
+    <div class="container">
+        <div class="row row-cols-2 p-5">
+            @foreach (var collection in collections)
+            {
+                <div class="col border text-center p-5">@collection.name</div>
+            }
+        </div>
+    </div>
+}
+
 
 @code{
+    [Inject] 
+    private HttpClient Http { get; set; } = default!;
+    private List<Collection>? collections;
     private ComponentMetadata? selectedComponent;
     private Dictionary<string, ComponentMetadata> Components =>
         new()
@@ -26,7 +41,7 @@
             [nameof(CreatingCollectionComponent)] = new ComponentMetadata()
             {
                 Type = typeof(CreatingCollectionComponent),
-                Name = "Virgin Galactic",
+                Name = "Creating Collection",
                 Parameters = { [nameof(CreatingCollectionComponent.OnClickCallback)] =
                     EventCallback.Factory.Create<Type>(this, SetComponent) }
             }
@@ -48,5 +63,31 @@
     protected override void OnInitialized()
     {
         selectedComponent ??= Components.Values.FirstOrDefault();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await FetchCollections();
+    }
+
+    private async Task FetchCollections(){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5120/api/collection");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                collections = await response.Content.ReadFromJsonAsync<List<Collection>>();
+            }
+            else
+            {
+                // Manejo del error (por ejemplo, si el token es inválido)
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        
     }
 }
