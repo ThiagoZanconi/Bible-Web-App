@@ -1,0 +1,17 @@
+@using BlazorApp.Model
+
+<div class="container">
+    <div class="row row-cols-2 p-5">
+        @foreach (var collection in collections)
+        {
+            <div class="col border text-center p-5">@collection.name</div>
+        }
+    </div>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public List<Collection> collections { get; set; } = new();
+}

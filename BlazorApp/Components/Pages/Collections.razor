@@ -11,30 +11,27 @@
         <DynamicComponent Type="selectedComponent.Type"
             Parameters="selectedComponent.Parameters" />
 }
-@if(collections!=null){
-    <div class="container">
-        <div class="row row-cols-2 p-5">
-            @foreach (var collection in collections)
-            {
-                <div class="col border text-center p-5">@collection.name</div>
-            }
-        </div>
-    </div>
-}
 
+<DynamicComponent Type="renderedCollections.Type"
+            Parameters="renderedCollections.Parameters" />
 
 @code{
     [Inject] 
     private HttpClient Http { get; set; } = default!;
     private List<Collection>? collections;
     private ComponentMetadata? selectedComponent;
+    private ComponentMetadata renderedCollections {get;set;} = new ComponentMetadata()
+            {
+                Type = typeof(CollectionsNotFound),
+                Name = "Collections Not Found"
+            };
     private Dictionary<string, ComponentMetadata> Components =>
         new()
         {
             [nameof(CreateCollectionButton)] = new ComponentMetadata()
             {
                 Type = typeof(CreateCollectionButton),
-                Name = "Create Collection Button Pressed",
+                Name = "Create Collection Button",
                 Parameters = { [nameof(CreateCollectionButton.OnClickCallback)] =
                     EventCallback.Factory.Create<Type>(this, SetComponent) }
             },
@@ -46,10 +43,8 @@
                     EventCallback.Factory.Create<Type>(this, SetComponent) }
             }
         };
-
     private void SetComponent(Type e)
     {
-        Console.WriteLine("SetComponent");
         string key = e.Name; // Obtener la clave correcta del diccionario
         if (Components.TryGetValue(key, out var metadata))
         {
@@ -81,6 +76,14 @@
             if (response.IsSuccessStatusCode)
             {
                 collections = await response.Content.ReadFromJsonAsync<List<Collection>>();
+                if(collections!=null){
+                    renderedCollections = new ComponentMetadata()
+                    {
+                        Type = typeof(UserCollections),
+                        Name = "User Collections",
+                        Parameters = { [nameof(UserCollections.collections)] = collections }
+                    };
+                }
             }
             else
             {
@@ -88,6 +91,6 @@
                 Console.WriteLine($"Error: {response.StatusCode}");
             }
         }
-        
+        StateHasChanged(); 
     }
 }

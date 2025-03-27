@@ -1,0 +1,17 @@
+<div>
+    Hello
+</div>
+
+<button class="btn btn-primary mx-auto mt-5" @onclick="Logout">
+    Log Out
+</button>
+
+@code{
+    [Parameter]
+    public EventCallback OnClickCallback {get; set;}
+
+    public async Task Logout()
+    {
+        await OnClickCallback.InvokeAsync();
+    }
+}

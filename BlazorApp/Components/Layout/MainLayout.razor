@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using System.IdentityModel.Tokens.Jwt;
+@using Layout.Components
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
 
@@ -15,14 +16,10 @@
                 <hr>
                 <div class="mt-3 mx-auto">
                     @if(isLoggedIn){
-                        <button class="btn btn-primary mx-auto" @onclick="Logout">
-                            Log Out
-                        </button>
+                        <LoggedComponent />
                     }
                     else{
-                        <a href="login" class="btn btn-primary mx-auto">
-                            Log In
-                        </a>
+                        <NotLoggedComponent />
                     }
                 </div>
             </div>

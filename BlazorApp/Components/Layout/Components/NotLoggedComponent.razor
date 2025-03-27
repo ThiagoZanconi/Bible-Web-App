@@ -1,0 +1,25 @@
+<a href="login" class="btn btn-primary mx-auto">
+    Log In
+</a>
+
+<a href="register" class="btn btn-primary mx-auto">
+    Sign In
+</a>
+
+@code{
+    [Parameter]
+    public EventCallback OnClickCallback {get; set;}
+
+    [Parameter]
+    public EventCallback SignIn {get; set;}
+
+    public async Task Login()
+    {
+        await OnClickCallback.InvokeAsync();
+    }
+
+    public async Task Signin()
+    {
+        await SignIn.InvokeAsync();
+    }
+}
