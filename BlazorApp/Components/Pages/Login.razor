@@ -1,6 +1,9 @@
 @page "/login"
 @using BlazorApp.Model
 @using BlazorApp.model
+@using System.IdentityModel.Tokens.Jwt;
+@inject TokenState TokenState
+@inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
@@ -43,7 +46,6 @@
     [Inject] 
     private HttpClient Http { get; set; } = default!;
     private UserLogin user = new();
-    private string? token;
     private int statusCode = 200;
     private async Task login()
     {
@@ -55,19 +57,16 @@
                 statusCode = 200;
                 var body = await response.Content.ReadFromJsonAsync<Token>();
                 if(body!=null){
-                    token = body.token;
+                    var token = body.token;
                     await SaveToken(token);
-                }
-                Console.WriteLine("Token recibido: " + token);
+                }      
             }
             else
                 if(response.StatusCode == System.Net.HttpStatusCode.NotFound){
                     statusCode = 404;
-                    Console.WriteLine("Credenciales incorrectas");
                 }
                 else{
                     statusCode = 500;
-                    Console.WriteLine("Error de autenticacion");
                 }
         }
         catch (Exception ex)
@@ -75,21 +74,10 @@
             Console.WriteLine("Error: " + ex.Message);
         }
     }
-
     private async Task SaveToken(string jwt)
     {
         await localStorage.SetItemAsync("jwtToken", jwt);
+        TokenState.SetToken(jwt);
     }
-
-    private async Task LoadToken()
-    {
-        token = await localStorage.GetItemAsync<string>("jwtToken");
-    }
-
-    private async Task Logout()
-    {
-        await localStorage.RemoveItemAsync("jwtToken");
-        token = null;
-    }
-        
+      
 }

@@ -1,4 +1,5 @@
 using BlazorApp.Components;
+using BlazorApp.Model;
 using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddControllers();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSingleton<TokenState>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {

@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using System.IdentityModel.Tokens.Jwt;
+@using BlazorApp.Model
 @using Layout.Components
+@inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
 
@@ -16,10 +18,11 @@
                 <hr>
                 <div class="mt-3 mx-auto">
                     @if(isLoggedIn){
-                        <LoggedComponent />
+                        <div> Bienvenido, @userName</div>
+                        <BlazorApp.Components.Layout.Components.LoggedComponent OnClickCallback=Logout/>
                     }
                     else{
-                        <NotLoggedComponent />
+                        <BlazorApp.Components.Layout.Components.NotLoggedComponent/>
                     }
                 </div>
             </div>
@@ -49,14 +52,15 @@
     <span class="dismiss">🗙</span>
 </div>
 
-
 @code{
     private bool expand;
     private string NavBarClasses => expand ? "navbar-collapse" : "collapse navbar-collapse";
+    private bool isLoggedIn;
+    private string userName = "";
+
     private void ToggleNav(){
         expand = !expand;
     }
-    private bool isLoggedIn;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -64,6 +68,7 @@
             isLoggedIn = await LoggedIn();
             await JS.InvokeVoidAsync("console.log", "Componente renderizado");
         }
+        await SetUserName();
     }
     private async Task<bool> LoggedIn()
     {
@@ -77,19 +82,26 @@
         isLoggedIn = false;
     }
 
-    public async Task<string?> GetUserName()
+    private async Task SetUserName()
     {
         var token = await localStorage.GetItemAsync<string>("jwtToken");
 
-        if (string.IsNullOrEmpty(token))
-            return null; // No hay token almacenado
+        if (!string.IsNullOrEmpty(token)){
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token); // Decodificar el token
+            // Obtener el nombre del usuario (puede ser "name" o "unique_name")
+            var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            userName = nameClaim?.Value ?? "";
+        }
+    }
 
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token); // Decodificar el token
+    protected override void OnInitialized()
+    {
+        TokenState.OnChange += StateHasChanged;
+    }
 
-        // Obtener el nombre del usuario (puede ser "name" o "unique_name")
-        var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "name" || c.Type == "unique_name");
-
-        return nameClaim?.Value; // Retorna el nombre o null si no existe
+    public void Dispose()
+    {
+        TokenState.OnChange -= StateHasChanged;
     }
 }
