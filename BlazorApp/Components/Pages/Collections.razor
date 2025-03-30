@@ -4,6 +4,7 @@
 @using BlazorApp.Model
 @using BlazorApp.model
 @using System.Net.Http.Headers
+@inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 @if (selectedComponent is not null)
@@ -18,6 +19,7 @@
 @code{
     [Inject] 
     private HttpClient Http { get; set; } = default!;
+    private string? token;
     private List<Collection>? collections;
     private ComponentMetadata? selectedComponent;
     private ComponentMetadata renderedCollections {get;set;} = new ComponentMetadata()
@@ -25,44 +27,54 @@
                 Type = typeof(CollectionsNotFound),
                 Name = "Log in to see or create collections"
             };
-    private Dictionary<string, ComponentMetadata> Components =>
-        new()
-        {
-            [nameof(CreateCollectionButton)] = new ComponentMetadata()
-            {
-                Type = typeof(CreateCollectionButton),
-                Name = "Create Collection Button",
-                Parameters = { [nameof(CreateCollectionButton.OnClickCallback)] =
-                    EventCallback.Factory.Create<Type>(this, SetComponent) }
-            },
-            [nameof(CreatingCollectionComponent)] = new ComponentMetadata()
-            {
-                Type = typeof(CreatingCollectionComponent),
-                Name = "Creating Collection",
-                Parameters = { [nameof(CreatingCollectionComponent.OnClickCallback)] =
-                    EventCallback.Factory.Create<Type>(this, SetComponent) }
-            }
-        };
+    private Dictionary<string, ComponentMetadata> Components = new();
     private void SetComponent(Type e)
     {
-        string key = e.Name; // Obtener la clave correcta del diccionario
+        string key = e.Name;
         if (Components.TryGetValue(key, out var metadata))
         {
             selectedComponent = metadata;
         }
         else
         {
-            selectedComponent = null; // O manejar el error de otra manera
+            selectedComponent = null;
         }
-    }
-    protected override void OnInitialized()
-    {
-        selectedComponent ??= Components.Values.FirstOrDefault();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if(firstRender){
+            token = await localStorage.GetItemAsync<string>("jwtToken");
+            bool isTokenValid = !string.IsNullOrEmpty(token);
+            InitCreateCollectionButtonComponent(isTokenValid);
+            InitCreatingCollectionComponent();
+            selectedComponent = Components[nameof(CreateCollectionButton)];
+        }
         await FetchCollections();
+    }
+
+    private void InitCreateCollectionButtonComponent(bool loggedIn){
+        Components[nameof(CreateCollectionButton)] = new ComponentMetadata()
+            {
+                Type = typeof(CreateCollectionButton),
+                Name = "Create Collection Button",
+                Parameters = { 
+                    [nameof(CreateCollectionButton.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent),
+                    [nameof(CreateCollectionButton.LoggedIn)] = loggedIn
+                }
+            };
+    }
+
+    private void InitCreatingCollectionComponent(){
+         Components[nameof(CreatingCollectionComponent)] = new ComponentMetadata()
+            {
+                Type = typeof(CreatingCollectionComponent),
+                Name = "Creating Collection",
+                Parameters = 
+                { 
+                    [nameof(CreatingCollectionComponent.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent)
+                }
+            };
     }
 
     private async Task FetchCollections(){
@@ -87,10 +99,26 @@
             }
             else
             {
-                // Manejo del error (por ejemplo, si el token es inválido)
                 Console.WriteLine($"Error: {response.StatusCode}");
             }
         }
         StateHasChanged(); 
+    }
+
+    private void LoggedOut(string? token){
+        if(token==null){
+            InitCreateCollectionButtonComponent(false);
+            selectedComponent = Components[nameof(CreateCollectionButton)];
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        TokenState.OnChange += ()=> LoggedOut(TokenState.Token);
+    }
+    public void Dispose()
+    {
+        TokenState.OnChange -= ()=> LoggedOut(TokenState.Token);
     }
 }

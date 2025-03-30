@@ -7,7 +7,6 @@
 @inject IJSRuntime JS
 
 <div class="page">
-
     @if(expand){
         <nav class="d-flex flex-column flex-shrink-0 p-2 text-white bg-dark w-25-md sidebar">
             <div class="@NavBarClasses" id="navbarNavDropdown">
@@ -72,7 +71,6 @@
                 var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
                 var userName = nameClaim?.Value ?? "";
                 selectedComponent = GetLoggedComponent(userName);
-                Console.WriteLine("Username actualizado");
                 StateHasChanged();
             }
     }

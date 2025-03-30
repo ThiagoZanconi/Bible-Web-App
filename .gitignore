@@ -1,5 +1,5 @@
-bin/
-obj/
+BlazorApp/bin/
+BlazorApp/obj/
 
 /bin
 /obj
