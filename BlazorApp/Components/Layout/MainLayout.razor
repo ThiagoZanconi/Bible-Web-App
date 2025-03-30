@@ -16,15 +16,7 @@
                 </div>
                 <NavMenu />
                 <hr>
-                <div class="mt-3 mx-auto">
-                    @if(isLoggedIn){
-                        <div> Bienvenido, @userName</div>
-                        <BlazorApp.Components.Layout.Components.LoggedComponent OnClickCallback=Logout/>
-                    }
-                    else{
-                        <BlazorApp.Components.Layout.Components.NotLoggedComponent/>
-                    }
-                </div>
+                <DynamicComponent Type="selectedComponent.Type" Parameters="selectedComponent.Parameters" />
             </div>
         </nav>
     }
@@ -55,53 +47,61 @@
 @code{
     private bool expand;
     private string NavBarClasses => expand ? "navbar-collapse" : "collapse navbar-collapse";
-    private bool isLoggedIn;
-    private string userName = "";
+    private ComponentMetadata selectedComponent {get; set;} = notLoggedComponent;
+    private static ComponentMetadata notLoggedComponent = new ComponentMetadata()
+            {
+                Type = typeof(NotLoggedComponent),
+                Name = "Creating Collection"
+            };
 
     private void ToggleNav(){
         expand = !expand;
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            isLoggedIn = await LoggedIn();
-            await JS.InvokeVoidAsync("console.log", "Componente renderizado");
-        }
-        await SetUserName();
-    }
-    private async Task<bool> LoggedIn()
-    {
-        var token = await localStorage.GetItemAsync<string>("jwtToken");
-        return !string.IsNullOrEmpty(token);
     }
 
     private async Task Logout()
     {
         await localStorage.RemoveItemAsync("jwtToken");
-        isLoggedIn = false;
+        selectedComponent = notLoggedComponent;
     }
 
-    private async Task SetUserName()
+    private void SetUserName(string? token)
     {
-        var token = await localStorage.GetItemAsync<string>("jwtToken");
-
         if (!string.IsNullOrEmpty(token)){
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token); // Decodificar el token
-            // Obtener el nombre del usuario (puede ser "name" o "unique_name")
-            var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-            userName = nameClaim?.Value ?? "";
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+                var userName = nameClaim?.Value ?? "";
+                selectedComponent = GetLoggedComponent(userName);
+                Console.WriteLine("Username actualizado");
+                StateHasChanged();
+            }
+    }
+
+    private ComponentMetadata GetLoggedComponent(string userName){
+        return new ComponentMetadata()
+            {
+                Type = typeof(LoggedComponent),
+                Name = "Create Collection Button",
+                Parameters = { 
+                    [nameof(LoggedComponent.OnClickCallback)] = EventCallback.Factory.Create(this, Logout),
+                    [nameof(LoggedComponent.UserName)] = userName         
+                }
+            };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            var token = await localStorage.GetItemAsync<string>("jwtToken");
+            SetUserName(token);
         }
     }
-
     protected override void OnInitialized()
     {
-        TokenState.OnChange += StateHasChanged;
+        TokenState.OnChange += ()=> SetUserName(TokenState.Token);
     }
-
     public void Dispose()
     {
-        TokenState.OnChange -= StateHasChanged;
+        TokenState.OnChange -= ()=> SetUserName(TokenState.Token);
     }
 }

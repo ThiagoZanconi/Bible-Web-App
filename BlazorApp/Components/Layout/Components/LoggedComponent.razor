@@ -1,15 +1,23 @@
-<div>
-    Hello
-</div>
+<div class="d-flex flex-column px-au">
+    <div class="col mx-auto px-auto">
+        <div class="row mx-auto mt-3">
+            Hello, @UserName
+        </div>
 
-<button class="btn btn-primary mx-auto mt-5" @onclick="Logout">
-    Log Out
-</button>
+        <div class="text-center mt-3">
+            <button class="btn btn-primary" @onclick="Logout">
+                Log Out
+            </button>
+        </div>
+    </div>
+</div>
 
 @code{
     [Parameter]
     public EventCallback OnClickCallback {get; set;}
 
+    [Parameter]
+    public string UserName {get; set;} = "";
     public async Task Logout()
     {
         await OnClickCallback.InvokeAsync();
