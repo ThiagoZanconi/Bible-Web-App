@@ -1,17 +1,30 @@
 @using BlazorApp.Model
 
 <div class="container">
-    <div class="row row-cols-2 p-5">
+    <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
         @foreach (var collection in collections)
         {
-            <div class="col border text-center p-5">@collection.name</div>
+            <div class="col d-flex justify-content-between">
+                <button class="border p-5 rounded-3 underline w-100 h-100">
+                    @collection.name
+                </button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3" @onclick="() => DeleteCollection(collection)">
+                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                    </button>
+                </div>
+            </div>
         }
     </div>
 </div>
 
-
-
 @code{
     [Parameter]
     public List<Collection> collections { get; set; } = new();
+
+    private void DeleteCollection(Collection collection)
+    {
+        collections.Remove(collection);
+        StateHasChanged();
+    }
 }

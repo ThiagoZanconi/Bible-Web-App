@@ -49,8 +49,8 @@
             InitCreateCollectionButtonComponent(isTokenValid);
             InitCreatingCollectionComponent();
             selectedComponent = Components[nameof(CreateCollectionButton)];
+            await FetchCollections();
         }
-        await FetchCollections();
     }
 
     private void InitCreateCollectionButtonComponent(bool loggedIn){
@@ -109,6 +109,7 @@
         if(token==null){
             InitCreateCollectionButtonComponent(false);
             selectedComponent = Components[nameof(CreateCollectionButton)];
+            Console.WriteLine("Logged Out"); 
             StateHasChanged();
         }
     }

@@ -273,10 +273,12 @@ D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\BlazorApp.pdb
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\BlazorApp.genruntimeconfig.cache
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\ref\BlazorApp.dll
 D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\scopedcss\Components\Pages\Collections.razor.rz.scp.css
-D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\io2m3ndci8-z7p6a4xweg.gz
-D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\wo77s772mi-ibgr8pacpi.gz
 D:\GitHub\Bible-Web-App\BlazorApp\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
 D:\GitHub\Bible-Web-App\BlazorApp\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\GitHub\Bible-Web-App\BlazorApp\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
 D:\GitHub\Bible-Web-App\BlazorApp\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 D:\GitHub\Bible-Web-App\BlazorApp\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\scopedcss\Components\Pages\CollectionsComponents\UserCollections.razor.rz.scp.css
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\io2m3ndci8-wnroft5qjp.gz
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\wo77s772mi-c6ry7amhzc.gz
+D:\GitHub\Bible-Web-App\BlazorApp\obj\Debug\net9.0\compressed\0gduyq698f-1j64ry2w2c.gz

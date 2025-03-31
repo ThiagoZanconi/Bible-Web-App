@@ -208,3 +208,7 @@ main[b-qgsvw684bo] {
     outline: none;
     box-shadow: none;
   }
+/* _content/BlazorApp/Components/Pages/CollectionsComponents/UserCollections.razor.rz.scp.css */
+.underline:hover[b-u5roek7w2e] {
+    text-decoration: underline;
+}

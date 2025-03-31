@@ -6,7 +6,7 @@
     },
     {
       "Id": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\BlazorApp.bundle.scp.css",
-      "PackagePath": "staticwebassets\\BlazorApp.ibgr8pacpi.bundle.scp.css"
+      "PackagePath": "staticwebassets\\BlazorApp.c6ry7amhzc.bundle.scp.css"
     },
     {
       "Id": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\wwwroot\\app.css",
@@ -15,6 +15,10 @@
     {
       "Id": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\wwwroot\\images\\trash-can-icon.svg",
+      "PackagePath": "staticwebassets\\images\\trash-can-icon.svg"
     },
     {
       "Id": "D:\\GitHub\\Bible-Web-App\\BlazorApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",

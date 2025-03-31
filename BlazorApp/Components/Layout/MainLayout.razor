@@ -5,6 +5,7 @@
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
+@inject NavigationManager Navigation
 
 <div class="page">
     @if(expand){
@@ -61,6 +62,7 @@
     {
         await localStorage.RemoveItemAsync("jwtToken");
         selectedComponent = notLoggedComponent;
+        Navigation.NavigateTo("");
     }
 
     private void SetUserName(string? token)
