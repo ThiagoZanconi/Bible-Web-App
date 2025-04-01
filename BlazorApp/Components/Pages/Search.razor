@@ -8,7 +8,7 @@
         </button>
         <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton">
             @foreach(var book in OrderedBooks){
-                <div class="dropdown-item w-100" @onclick="() => SetSelected(book)">@book</div>
+                <div class="dropdown-item w-100 text-center" @onclick="() => SetSelected(book)">@book</div>
             }
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
             @foreach(var key in keywords){
                 <div class="col d-flex justify-content-start">
-                    <div class="mr-2">
+                    <div class="d-flex mr-2 my-auto">
                         @key
                     </div>
                     <button class="btn btn-danger-hover d-flex align-items-center" @onclick="() => RemoveKeyword(key)">
@@ -77,6 +77,10 @@
         ToggleDropdown();
     }
     private void SearchVerses(){
+        if(selectedBook == "Book" || selectedBook == "ANY")
+        {
+            
+        }
 
     }
     private void AddKeyword(string key){
