@@ -28,7 +28,7 @@
                 Name = "Log in to see or create collections"
             };
     private Dictionary<string, ComponentMetadata> Components = new();
-    private void SetComponent(Type e)
+    private async void SetComponent(Type e)
     {
         string key = e.Name;
         if (Components.TryGetValue(key, out var metadata))
@@ -39,6 +39,7 @@
         {
             selectedComponent = null;
         }
+        await FetchCollections();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

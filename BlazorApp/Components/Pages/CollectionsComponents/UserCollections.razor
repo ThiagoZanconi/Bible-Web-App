@@ -1,4 +1,6 @@
 @using BlazorApp.Model
+@using System.Net.Http.Headers
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="container">
     <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
@@ -19,12 +21,39 @@
 </div>
 
 @code{
+    [Inject] 
+    private HttpClient Http { get; set; } = default!;
+
     [Parameter]
     public List<Collection> collections { get; set; } = new();
 
-    private void DeleteCollection(Collection collection)
+    private async void DeleteCollection(Collection collection)
     {
-        collections.Remove(collection);
+        bool deletedCollection = await DeleteCollection(collection.name);
+        if(deletedCollection){
+            collections.Remove(collection);
+            StateHasChanged();
+        } 
+    }
+    private async Task<bool> DeleteCollection(string name){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5120/api/collection/"+name);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Coleccion creada exitosamente");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
         StateHasChanged();
+        return false;
     }
 }

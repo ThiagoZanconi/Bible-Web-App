@@ -1,7 +1,10 @@
+@using System.Net.Http.Headers
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 <div class="text-center mx-auto" >     
-    <EditForm Model="@modelo" OnValidSubmit="@SaveCollection" class="needs-validation"> 
+    <EditForm Model="@model" OnValidSubmit="@SaveCollection" class="needs-validation"> 
         <DataAnnotationsValidator />
-        <InputText type="text" class="form-control w-100" required  placeholder="Collection Name" @bind-Value="modelo.Nombre" />
+        <InputText type="text" class="form-control w-100" required  placeholder="Collection Name" @bind-Value="model.Name" />
         <div class="d-flex justify-content-center mt-2 px-2">
             <div class="w-75">
                 <button class="w-75 btn btn-danger" @onclick="CancelCollection">
@@ -18,18 +21,40 @@
 </div>
 
 @code{
+    [Inject] 
+    private HttpClient Http { get; set; } = default!;
 
     [Parameter]
     public EventCallback<Type> OnClickCallback {get; set;}
+    private Model model = new Model();
     private async void SaveCollection(){
+        await CreateCollection(model.Name);
         await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
     }
     private async void CancelCollection(){
         await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
     }
-    private Modelo modelo = new Modelo();
-    public class Modelo
+    private async Task CreateCollection(string name){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5120/api/collection/"+name);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Coleccion creada exitosamente");
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        StateHasChanged();
+    }
+    private class Model
     {
-        public string Nombre { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }
