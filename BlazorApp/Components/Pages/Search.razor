@@ -1,0 +1,92 @@
+@page "/search"
+@rendermode InteractiveServer
+
+<div class="w-25 mx-auto">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
+            @selectedBook
+        </button>
+        <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton">
+            @foreach(var book in OrderedBooks){
+                <div class="dropdown-item w-100" @onclick="() => SetSelected(book)">@book</div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3" >     
+    <div class="d-flex justify-content-around w-100">
+        <InputText type="text" class="form-control w-75" placeholder="Keyword" @bind-Value="keyword" />
+        <button class="btn btn-primary" @onclick="() => AddKeyword(keyword)">
+            Add
+        </button>
+    </div>
+
+    <div class="mt-2 px-2">
+        <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
+            @foreach(var key in keywords){
+                <div class="col d-flex justify-content-start">
+                    <div class="mr-2">
+                        @key
+                    </div>
+                    <button class="btn btn-danger-hover d-flex align-items-center" @onclick="() => RemoveKeyword(key)">
+                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="w-50 mx-auto mt-3">
+        <button class="w-100 btn btn-primary" @onclick="SearchVerses">
+            Search Verses
+        </button>
+    </div>
+</div>
+   
+@code{
+    public static readonly string[] OrderedBooks =
+    {
+        "ANY", "GEN", "EXO", "LEV", "NUM", "DEU", 
+        "JOS", "JDG", "RUT", "1SA", "2SA",
+        "1KI", "2KI", "1CH", "2CH", "EZR",
+        "NEH", "EST", "JOB", "PSA", "PRO",
+        "ECC", "SNG", "ISA", "JER", "LAM",
+        "EZK", "DAN", "HOS", "JOL", "AMO",
+        "OBA", "JON", "MIC", "NAM", "HAB",
+        "ZEP", "HAG", "ZEC", "MAL",
+        "MAT", "MRK", "LUK", "JHN", "ACT",
+        "ROM", "1CO", "2CO", "GAL", "EPH",
+        "PHP", "COL", "1TH", "2TH",
+        "1TI", "2TI", "TIT", "PHM", "HEB",
+        "JAS", "1PE", "2PE", "1JN", "2JN",
+        "3JN", "JUD", "REV"
+    };
+    private string selectedBook = "Book";
+    private string keyword = String.Empty;
+    private List<string> keywords = new();
+    private bool show;
+    private string NavBarClasses => show ? "dropdown-menu show" : "dropdown-menu";
+
+    private void ToggleDropdown(){
+        show = !show;
+    }
+
+    private void SetSelected(string book){
+        selectedBook = book;
+        ToggleDropdown();
+    }
+    private void SearchVerses(){
+
+    }
+    private void AddKeyword(string key){
+        if(keyword!=""){
+            keywords.Add(key);
+            keyword="";
+        }
+    }
+
+    private void RemoveKeyword(string key){
+        keywords.Remove(key);
+    }
+}
