@@ -1,6 +1,2 @@
-BlazorApp/bin/
-BlazorApp/obj/
-
-/bin
-/obj
-.fake
+/BlazorApp/bin/
+/BlazorApp/obj/
