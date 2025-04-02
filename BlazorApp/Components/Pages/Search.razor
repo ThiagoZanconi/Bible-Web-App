@@ -1,12 +1,13 @@
 @page "/search"
+@using BlazorApp.Model
 @rendermode InteractiveServer
 
-<div class="w-25 mx-auto">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
+<div class="w-100 mx-auto">
+    <div class="dropdown text-center">
+        <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
             @selectedBook
         </button>
-        <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton">
+        <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
             @foreach(var book in OrderedBooks){
                 <div class="dropdown-item w-100 text-center" @onclick="() => SetSelected(book)">@book</div>
             }
@@ -16,7 +17,7 @@
 
 <div class="text-center mt-3" >     
     <div class="d-flex justify-content-around w-100">
-        <InputText type="text" class="form-control w-75" placeholder="Keyword" @bind-Value="keyword" />
+        <InputText type="text" class="form-control w-75" placeholder="Keyword" @bind-Value="keyword" @onkeydown="EnterPressed" />
         <button class="btn btn-primary" @onclick="() => AddKeyword(keyword)">
             Add
         </button>
@@ -42,9 +43,21 @@
             Search Verses
         </button>
     </div>
+    @if(verses!=null){
+        <pre id="displayed_verse" class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-3" style="white-space: pre-wrap; word-wrap: break-word;">
+            @GetVerses()
+        </pre>
+    }
+    else{
+        <pre id="displayed_verse" class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-3" style="white-space: pre-wrap; word-wrap: break-word;">
+            
+        </pre>
+    }
 </div>
    
 @code{
+    [Inject]
+    private HttpClient Http { get; set; } = default!;
     public static readonly string[] OrderedBooks =
     {
         "ANY", "GEN", "EXO", "LEV", "NUM", "DEU", 
@@ -65,32 +78,79 @@
     private string selectedBook = "Book";
     private string keyword = String.Empty;
     private List<string> keywords = new();
+    private List<Verse>? verses;
     private bool show;
-    private string NavBarClasses => show ? "dropdown-menu show" : "dropdown-menu";
-
+    private string NavBarClasses => show ? "dropdown-menu show d-grid" : "dropdown-menu d-none";
     private void ToggleDropdown(){
         show = !show;
     }
-
     private void SetSelected(string book){
         selectedBook = book;
         ToggleDropdown();
     }
-    private void SearchVerses(){
-        if(selectedBook == "Book" || selectedBook == "ANY")
-        {
-            
-        }
+    private async void SearchVerses(){
+        string keywordsString = string.Join(", ", keywords);
+        await FetchVerses(keywordsString);
+        StateHasChanged();
+    }
 
+    private async Task FetchVerses(string keywords){
+        try{
+            if(selectedBook == "Book" || selectedBook == "ANY")
+            {
+                verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/keywords/"+keywords);
+            }
+            else{
+                verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/"+selectedBook+"/keywords/"+keywords);
+            }
+        }
+        catch (Exception ex)
+        {
+            verses = null;
+            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+        }
+    }
+
+    private void EnterPressed(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            AddKeyword(keyword);
+        }
     }
     private void AddKeyword(string key){
         if(keyword!=""){
             keywords.Add(key);
             keyword="";
         }
+        StateHasChanged();
     }
 
     private void RemoveKeyword(string key){
         keywords.Remove(key);
+    }
+
+    private string GetVerses(){
+        string text = "";
+        if(verses!=null){
+            foreach(var verse in verses){
+                text+=verse.book+" "+verse.chapter+" ";
+                text+=ToSuperscript(verse.verse)+" ";
+                text+=verse.text+"\n";
+            }
+        }
+        else{
+            text="Error al retornar los versos";
+        }
+        return text;
+    }
+    private static string ToSuperscript(int number)
+    {
+        var superscriptDigits = new Dictionary<char, char>
+        {
+            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
+            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
+        };
+        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
     }
 }

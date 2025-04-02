@@ -1,6 +1,7 @@
 @using BlazorApp.Model
 @using System.Net.Http.Headers
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime JS
 
 <div class="container">
     <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
@@ -20,22 +21,52 @@
     </div>
 </div>
 
+<div class="modal fade @ModalShow" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-dialog-centered">
+      <div class="modal-header mx-auto">
+        <h5 class="modal-title text-danger text-center" id="exampleModalLabel">Confirm Delete?</h5>
+      </div>
+      <div class="modal-footer d-flex justify-content-around">
+        <button type="button" class="btn btn-secondary" @onclick="ToggleModal">Cancel</button>
+        <button type="button" class="btn btn-primary" @onclick="ConfirmDelete">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @code{
+
     [Inject] 
     private HttpClient Http { get; set; } = default!;
 
     [Parameter]
     public List<Collection> collections { get; set; } = new();
+    private bool show;
+    private string ModalShow => show ? "show d-block" : "";
+    private string collectionToDelete = String.Empty;
 
-    private async void DeleteCollection(Collection collection)
-    {
-        bool deletedCollection = await DeleteCollection(collection.name);
-        if(deletedCollection){
-            collections.Remove(collection);
-            StateHasChanged();
-        } 
+    private void ToggleModal(){
+        show = !show;
+        StateHasChanged();
     }
-    private async Task<bool> DeleteCollection(string name){
+    private void DeleteCollection(Collection collection)
+    {
+        collectionToDelete = collection.name;
+        ToggleModal();
+        StateHasChanged();
+    }
+    private async void ConfirmDelete()
+    {
+        bool deletedCollection = await DeleteCollectionRequest(collectionToDelete);
+        if(deletedCollection){
+            collections.Remove(collections.FirstOrDefault(c => c.name == collectionToDelete)!);
+            StateHasChanged();
+        }
+        ToggleModal();
+    }
+
+    private async Task<bool> DeleteCollectionRequest(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         if(token!=null){
             var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5120/api/collection/"+name);
@@ -45,7 +76,7 @@
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Coleccion creada exitosamente");
+                Console.WriteLine("Coleccion eliminada exitosamente");
                 return true;
             }
             else
