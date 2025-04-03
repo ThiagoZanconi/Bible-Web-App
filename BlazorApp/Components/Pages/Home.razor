@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using BlazorApp.Model
+@using BlazorApp.Components.Pages.HomeComponents
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @implements IAsyncDisposable
@@ -7,7 +8,7 @@
 <PageTitle>Home</PageTitle>
 
 <h1 class="text-primary text-center">BIBLE</h1>
-<div class="" @onclick="CloseDropdown">
+<div class="px-8" @onclick="CloseDropdown">
     @if (books is null)
     {
         <p class="text-center">Loading...</p>
@@ -37,11 +38,7 @@
                                             <button @onclick="() => SetPrevChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Prev </button>
                                         </div>
 
-                                        @foreach(var verse in verses){
-                                            <pre @onclick="ShowDropdown" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-justify bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
-                                                @PrintVerse(verse)
-                                            </pre>
-                                        }
+                                        <VersesComponent verses="verses" @ref="versesComponent"/>
 
                                         <div id="next_button" class="container w-full text-center mt-2 mb-2">
                                             <button @onclick="() => SetNextChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Next </button>
@@ -55,36 +52,8 @@
             }
         </ul>
     }
-
-    @if (IsDropdownVisible)
-    {
-        <ul class="dropdown-menu-custom" style="@DropdownStyle">
-            <li @onclick="() => SelectOption()">Opción 1</li>
-            <li @onclick="() => SelectOption()">Opción 2</li>
-            <li @onclick="() => SelectOption()">Opción 3</li>
-        </ul>
-    }
 </div>
 @code{
-    private bool IsDropdownVisible = false;
-    private string DropdownStyle = "";
-
-    private void ShowDropdown(MouseEventArgs e)
-    {
-        // Ajusta la posición al lugar del clic
-        DropdownStyle = $"top: {e.PageY}px; left: {e.PageX}px;";
-        IsDropdownVisible = true;
-    }
-
-    public void CloseDropdown()
-    {
-        IsDropdownVisible = false;
-        StateHasChanged();
-    }
-    private void SelectOption()
-    {
-        Console.WriteLine("Opcion seleccionada");
-    }
     private IJSObjectReference? module;
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -94,7 +63,6 @@
                 "./Components/Pages/Home.razor.js");
         }
     }
-
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (module is not null)
@@ -108,7 +76,6 @@
             }
         }
     }
-
     private async Task ScrollToPrevButton(){
         if(module!=null){
             await module.InvokeVoidAsync("scrollToPrevButton");
@@ -120,6 +87,7 @@
     private List<Book>? books;
     private List<Chapter>? chapters;
     private List<Verse>? verses;
+    private VersesComponent? versesComponent;
     private string expandedBook = "";
     private int expandedChapter = 0;
     protected override async Task OnInitializedAsync()
@@ -176,35 +144,6 @@
             Console.WriteLine($"Error al obtener datos: {ex.Message}");
         }
     }
-    private string GetVerses(){
-        string text = "";
-        if(verses!=null){
-            foreach(var verse in verses){
-                text+=ToSuperscript(verse.verse)+" ";
-                text+=verse.text;
-            }
-        }
-        else{
-            text="Error al retornar los versos";
-        }
-        return text;
-    }
-    private string PrintVerse(Verse verse){
-        string text = "";
-        text+=ToSuperscript(verse.verse)+" ";
-        text+=verse.text;
-        return text;
-    }
-    private static string ToSuperscript(int number)
-    {
-        var superscriptDigits = new Dictionary<char, char>
-        {
-            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
-            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
-        };
-
-        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
-    }
     private async Task SetPrevChapter(string current_book_id, int current_chapter){
         try{
             if(current_chapter > 1){
@@ -243,8 +182,7 @@
         int current = books!.FindIndex(b => b.id == book_id);
         return books[current + 1].id;
     }
-
-    private void DisplayCollections(){
-
+    private void CloseDropdown(){
+        versesComponent?.CloseDropdown();
     }
 }

@@ -7,9 +7,10 @@
     padding: 5px;
     margin: 0;
     z-index: 1000;
+    max-width: fit-content;
 }
 .dropdown-menu-custom li {
-    padding: 8px 12px;
+    padding: 8px;
     cursor: pointer;
 }
 .dropdown-menu-custom li:hover {

@@ -1,0 +1,54 @@
+@using BlazorApp.Model
+
+@foreach(var verse in verses){
+    <pre @onclick="ShowDropdown" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        @PrintVerse(verse)
+    </pre>
+}
+
+@if (IsDropdownVisible)
+    {
+        <ul class="dropdown-menu-custom" style="@DropdownStyle">
+            <li @onclick="() => SelectOption()">Opción 1</li>
+            <li @onclick="() => SelectOption()">Opción 2</li>
+            <li @onclick="() => SelectOption()">Opción 3</li>
+        </ul>
+    }
+
+@code{
+
+    [Parameter]
+    public List<Verse> verses { get; set; } = new();
+    private bool IsDropdownVisible = false;
+    private string DropdownStyle = "";
+    private void ShowDropdown(MouseEventArgs e)
+    {
+        DropdownStyle = $"top: {e.PageY}px; left: {e.PageX}px;";
+        IsDropdownVisible = true;
+    }
+    public void CloseDropdown()
+    {
+        IsDropdownVisible = false;
+        StateHasChanged();
+    }
+    private void SelectOption()
+    {
+        Console.WriteLine("Opcion seleccionada");
+    }
+    private string PrintVerse(Verse verse){
+        string text = "";
+        text+=ToSuperscript(verse.verse)+" ";
+        text+=verse.text;
+        return text;
+    }
+    private static string ToSuperscript(int number)
+    {
+        var superscriptDigits = new Dictionary<char, char>
+        {
+            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
+            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
+        };
+
+        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
+    }
+}

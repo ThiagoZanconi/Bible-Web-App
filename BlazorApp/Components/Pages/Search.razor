@@ -2,59 +2,60 @@
 @using BlazorApp.Model
 @rendermode InteractiveServer
 
-<div class="w-100 mx-auto">
-    <div class="dropdown text-center">
-        <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
-            @selectedBook
-        </button>
-        <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
-            @foreach(var book in OrderedBooks){
-                <div class="dropdown-item w-100 text-center" @onclick="() => SetSelected(book)">@book</div>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="text-center mt-3" >     
-    <div class="d-flex justify-content-around w-100">
-        <InputText type="text" class="form-control w-75" placeholder="Keyword" @bind-Value="keyword" @onkeydown="EnterPressed" />
-        <button class="btn btn-primary" @onclick="() => AddKeyword(keyword)">
-            Add
-        </button>
-    </div>
-
-    <div class="mt-2 px-2">
-        <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
-            @foreach(var key in keywords){
-                <div class="col d-flex justify-content-start">
-                    <div class="d-flex mr-2 my-auto">
-                        @key
-                    </div>
-                    <button class="btn btn-danger-hover d-flex align-items-center" @onclick="() => RemoveKeyword(key)">
-                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
-                    </button>
+<div class="px-8" @onclick="CloseDropdown"> 
+    <div >
+        <div class="w-100 mx-auto">
+            <div class="dropdown text-center">
+                <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
+                    @selectedBook
+                </button>
+                <div class="@NavBarClasses w-100" aria-labelledby="dropdownMenuButton" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                    @foreach(var book in OrderedBooks){
+                        <div class="dropdown-item w-100 text-center" @onclick="() => SetSelected(book)">@book</div>
+                    }
                 </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-3" >     
+            <div class="d-flex justify-content-around w-100">
+                <InputText type="text" class="form-control w-75" placeholder="Keyword" @bind-Value="keyword" @onkeydown="EnterPressed" />
+                <button class="btn btn-primary" @onclick="() => AddKeyword(keyword)">
+                    Add
+                </button>
+            </div>
+
+            <div class="mt-2 px-2">
+                <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
+                    @foreach(var key in keywords){
+                        <div class="col d-flex justify-content-start">
+                            <div class="d-flex mr-2 my-auto">
+                                @key
+                            </div>
+                            <button class="btn btn-danger-hover d-flex align-items-center" @onclick="() => RemoveKeyword(key)">
+                                <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="w-50 mx-auto mt-3">
+                <button class="w-100 btn btn-primary" @onclick="SearchVerses">
+                    Search Verses
+                </button>
+            </div>
+            @if(verses!=null){
+                <VersesComponent verses="verses" @ref="versesComponent"/>
+            }
+            else{
+                <pre id="displayed_verse" class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-3" style="white-space: pre-wrap; word-wrap: break-word;">
+                    
+                </pre>
             }
         </div>
     </div>
-
-    <div class="w-50 mx-auto mt-3">
-        <button class="w-100 btn btn-primary" @onclick="SearchVerses">
-            Search Verses
-        </button>
-    </div>
-    @if(verses!=null){
-        <pre id="displayed_verse" class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-3" style="white-space: pre-wrap; word-wrap: break-word;">
-            @GetVerses()
-        </pre>
-    }
-    else{
-        <pre id="displayed_verse" class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-3" style="white-space: pre-wrap; word-wrap: break-word;">
-            
-        </pre>
-    }
 </div>
-   
 @code{
     [Inject]
     private HttpClient Http { get; set; } = default!;
@@ -79,6 +80,7 @@
     private string keyword = String.Empty;
     private List<string> keywords = new();
     private List<Verse>? verses;
+    private VersesComponent? versesComponent;
     private bool show;
     private string NavBarClasses => show ? "dropdown-menu show d-grid" : "dropdown-menu d-none";
     private void ToggleDropdown(){
@@ -93,7 +95,6 @@
         await FetchVerses(keywordsString);
         StateHasChanged();
     }
-
     private async Task FetchVerses(string keywords){
         try{
             if(selectedBook == "Book" || selectedBook == "ANY")
@@ -110,7 +111,6 @@
             Console.WriteLine($"Error al obtener datos: {ex.Message}");
         }
     }
-
     private void EnterPressed(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
@@ -125,32 +125,10 @@
         }
         StateHasChanged();
     }
-
     private void RemoveKeyword(string key){
         keywords.Remove(key);
     }
-
-    private string GetVerses(){
-        string text = "";
-        if(verses!=null){
-            foreach(var verse in verses){
-                text+=verse.book+" "+verse.chapter+" ";
-                text+=ToSuperscript(verse.verse)+" ";
-                text+=verse.text+"\n";
-            }
-        }
-        else{
-            text="Error al retornar los versos";
-        }
-        return text;
-    }
-    private static string ToSuperscript(int number)
-    {
-        var superscriptDigits = new Dictionary<char, char>
-        {
-            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
-            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
-        };
-        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
+    private void CloseDropdown(){
+        versesComponent?.CloseDropdown();
     }
 }
