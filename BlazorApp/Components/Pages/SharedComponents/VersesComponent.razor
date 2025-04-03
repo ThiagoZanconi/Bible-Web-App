@@ -3,17 +3,24 @@
 @inject IBibleApiService BibleApiService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-@foreach(var verse in verses){
-    <pre @onclick="(e) => VerseSelected(verse,e)" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
-        @PrintVerse(verse)
-    </pre>
-}
-
+<div class="px-5">
+    @foreach(string chapter in ChapterVerseDictionary.Keys){
+        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+            @chapter
+        </pre>
+        <hr>
+        @foreach(Verse verse in ChapterVerseDictionary[chapter]){
+            <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="(e) => VerseSelected(verse,e)">
+                @PrintVerse(verse)
+            </pre>
+        }   
+    }
+</div>
 @if (IsDropdownVisible && IsLoggedIn)
     {
         <ul class="dropdown-menu-custom" style="@DropdownStyle">
-            @foreach(var collection in collections){
-                <li @onclick="() => SaveVerseToCollection()">@collection.name</li>
+            @foreach(Collection collection in collections){
+                <li @onclick="() => SaveVerseToCollection(collection.name)">@collection.name</li>
             }
             <hr>
             <li @onclick="() => CreateCollection()">New Collection</li>
@@ -21,9 +28,9 @@
     }
 
 @code{
-
     [Parameter]
     public List<Verse> verses { get; set; } = new();
+    private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
     private Verse selectedVerse = default!;
     private bool IsDropdownVisible = false;
     private bool IsLoggedIn = false;
@@ -32,7 +39,19 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender){
+            SetChapters();
             await SetSession();
+            StateHasChanged();
+        }
+    }
+    private void SetChapters(){
+        foreach(var verse in verses){
+            var chapter = verse.book+" "+verse.chapter;
+            if (!ChapterVerseDictionary.ContainsKey(chapter))
+            {
+                ChapterVerseDictionary[chapter] = new List<Verse>();
+            }
+            ChapterVerseDictionary[chapter].Add(verse);
         }
     }
     private async Task SetSession(){
@@ -40,7 +59,6 @@
         if(token!=null){
             IsLoggedIn = true;
             collections = await BibleApiService.GetCollectionsAsync(token) ?? new();
-            StateHasChanged();
         }
     }
 
@@ -58,12 +76,8 @@
         IsDropdownVisible = false;
         StateHasChanged();
     }
-    private void SelectOption()
-    {
-        Console.WriteLine("Opcion seleccionada");
-    }
     private string PrintVerse(Verse verse){
-        string text = "";
+        string text="";
         text+=ToSuperscript(verse.verse)+" ";
         text+=verse.text;
         return text;
@@ -78,10 +92,14 @@
 
         return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
     }
-    private void SaveVerseToCollection(){
-        Console.WriteLine("Save Verse to Collection");
+    private async void SaveVerseToCollection(string name){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            await BibleApiService.PostVerseToCollectionAsync(token, name, selectedVerse);
+        }
     }
     private void CreateCollection(){
         Console.WriteLine("Create Collection");
     }
+
 }

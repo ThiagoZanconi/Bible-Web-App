@@ -1,0 +1,36 @@
+@page "/collection/{name}"
+@using BlazorApp.Components.Services
+@using BlazorApp.Model
+@inject IBibleApiService BibleApiService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@rendermode InteractiveServer
+
+<div class="text-center"> @name </div>
+@if(verses!=null){
+    <VersesComponent verses="verses"/>
+}
+else{
+    <div>No verses Found in this collection</div>
+}
+
+@code{
+    [Parameter]
+    public string name { get; set; } = String.Empty;
+    private List<Verse>? verses;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            await FetchVerses();
+            StateHasChanged();
+        }
+    }
+
+    private async Task FetchVerses(){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            verses = await BibleApiService.GetVerseCollectionAsync(token,name);
+        }
+        
+    }
+
+}

@@ -2,13 +2,14 @@
 @using System.Net.Http.Headers
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
+@inject NavigationManager Navigation
 
 <div class="container">
     <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
         @foreach (var collection in collections)
         {
             <div class="col d-flex justify-content-between">
-                <button class="border p-5 rounded-3 underline-on-hover w-100 h-100">
+                <button class="border p-5 rounded-3 underline-on-hover w-100 h-100" @onclick="()=>NavigateToCollection(collection.name)">
                     @collection.name
                 </button>
                 <div class="d-flex gap-2">
@@ -86,5 +87,9 @@
         }
         StateHasChanged();
         return false;
+    }
+
+    private void NavigateToCollection(string name){
+        Navigation.NavigateTo("/collection/"+name);
     }
 }
