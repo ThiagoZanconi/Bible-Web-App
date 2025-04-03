@@ -1,13 +1,11 @@
 using BlazorApp.Components;
+using BlazorApp.Components.Services;
 using BlazorApp.Model;
 using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddControllers();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<TokenState>();
@@ -15,6 +13,11 @@ builder.Services.AddSingleton<TokenState>();
 builder.Services.AddScoped(sp => new HttpClient
 {
     BaseAddress = new Uri("http://localhost:5120")
+});
+
+builder.Services.AddHttpClient<IBibleApiService, BibleApiService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5120/");
 });
 
 var app = builder.Build();
@@ -28,10 +31,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

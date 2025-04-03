@@ -1,17 +1,22 @@
+@using BlazorApp.Components.Services
 @using BlazorApp.Model
+@inject IBibleApiService BibleApiService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 @foreach(var verse in verses){
-    <pre @onclick="ShowDropdown" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+    <pre @onclick="(e) => VerseSelected(verse,e)" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
         @PrintVerse(verse)
     </pre>
 }
 
-@if (IsDropdownVisible)
+@if (IsDropdownVisible && IsLoggedIn)
     {
         <ul class="dropdown-menu-custom" style="@DropdownStyle">
-            <li @onclick="() => SelectOption()">Opción 1</li>
-            <li @onclick="() => SelectOption()">Opción 2</li>
-            <li @onclick="() => SelectOption()">Opción 3</li>
+            @foreach(var collection in collections){
+                <li @onclick="() => SaveVerseToCollection()">@collection.name</li>
+            }
+            <hr>
+            <li @onclick="() => CreateCollection()">New Collection</li>
         </ul>
     }
 
@@ -19,8 +24,30 @@
 
     [Parameter]
     public List<Verse> verses { get; set; } = new();
+    private Verse selectedVerse = default!;
     private bool IsDropdownVisible = false;
+    private bool IsLoggedIn = false;
     private string DropdownStyle = "";
+    private List<Collection> collections = new();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            await SetSession();
+        }
+    }
+    private async Task SetSession(){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        if(token!=null){
+            IsLoggedIn = true;
+            collections = await BibleApiService.GetCollectionsAsync(token) ?? new();
+            StateHasChanged();
+        }
+    }
+
+    private void VerseSelected(Verse verse, MouseEventArgs e){
+        selectedVerse = verse;
+        ShowDropdown(e);
+    }
     private void ShowDropdown(MouseEventArgs e)
     {
         DropdownStyle = $"top: {e.PageY}px; left: {e.PageX}px;";
@@ -50,5 +77,11 @@
         };
 
         return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
+    }
+    private void SaveVerseToCollection(){
+        Console.WriteLine("Save Verse to Collection");
+    }
+    private void CreateCollection(){
+        Console.WriteLine("Create Collection");
     }
 }
