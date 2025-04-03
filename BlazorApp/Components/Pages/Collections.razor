@@ -7,15 +7,16 @@
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-@if (selectedComponent is not null)
-{
-        <DynamicComponent Type="selectedComponent.Type"
-            Parameters="selectedComponent.Parameters" />
-}
+<div class="content">
+    @if (selectedComponent is not null)
+    {
+            <DynamicComponent Type="selectedComponent.Type"
+                Parameters="selectedComponent.Parameters" />
+    }
 
-<DynamicComponent Type="renderedCollections.Type"
-            Parameters="renderedCollections.Parameters" />
-
+    <DynamicComponent Type="renderedCollections.Type"
+                Parameters="renderedCollections.Parameters" />
+</div>
 @code{
     [Inject] 
     private HttpClient Http { get; set; } = default!;

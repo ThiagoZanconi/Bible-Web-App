@@ -7,54 +7,84 @@
 <PageTitle>Home</PageTitle>
 
 <h1 class="text-primary text-center">BIBLE</h1>
-
-@if (books is null)
-{
-    <p class="text-center">Loading...</p>
-}
-else
-{
-    <ul class="list-unstyled">
-        @foreach (var book in books)
-        {
-            <li>
-                <div class="container text-center mt-1 w-50">
-                    <BookButton text=@book.name OnClick="() => FetchBook(book.id)" />
-                </div>
-                @if (expandedBook.Equals(book.id) && chapters!=null)
-                {
-                    <div class="container mt-2">
-                        <div class="row">
-                            @for (int i = 1; i <= @chapters.Count; i++)
-                            {
-                                int chapterIndex = i;
-                                <div class="col-2 p-1">
-                                    <button @onclick="() => FetchChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
-                                </div>
-                                @if (expandedChapter == i && verses!=null)
-                                {
-                                    <div id="prev_button" class="container w-full text-center mt-2 mb-2">
-                                        <button @onclick="() => SetPrevChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Prev </button>
-                                    </div>
-
-                                    <pre id="displayed_verse" class="fs-5 fw-light text-justify bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
-                                        @GetVerses()
-                                    </pre>
-
-                                    <div id="next_button" class="container w-full text-center mt-2 mb-2">
-                                        <button @onclick="() => SetNextChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Next </button>
-                                    </div>
-                                }
-                            }
-                        </div>
+<div class="" @onclick="CloseDropdown">
+    @if (books is null)
+    {
+        <p class="text-center">Loading...</p>
+    }
+    else
+    {
+        <ul class="list-unstyled">
+            @foreach (var book in books)
+            {
+                <li>
+                    <div class="container text-center mt-1 w-50">
+                        <BookButton text=@book.name OnClick="() => FetchBook(book.id)" />
                     </div>
-                }
-            </li>
-        }
-    </ul>
-}
+                    @if (expandedBook.Equals(book.id) && chapters!=null)
+                    {
+                        <div class="container mt-2">
+                            <div class="row">
+                                @for (int i = 1; i <= @chapters.Count; i++)
+                                {
+                                    int chapterIndex = i;
+                                    <div class="col-2 p-1">
+                                        <button @onclick="() => FetchChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
+                                    </div>
+                                    @if (expandedChapter == i && verses!=null)
+                                    {
+                                        <div id="prev_button" class="container w-full text-center mt-2 mb-2">
+                                            <button @onclick="() => SetPrevChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Prev </button>
+                                        </div>
 
+                                        @foreach(var verse in verses){
+                                            <pre @onclick="ShowDropdown" @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-justify bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+                                                @PrintVerse(verse)
+                                            </pre>
+                                        }
+
+                                        <div id="next_button" class="container w-full text-center mt-2 mb-2">
+                                            <button @onclick="() => SetNextChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Next </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+
+    @if (IsDropdownVisible)
+    {
+        <ul class="dropdown-menu-custom" style="@DropdownStyle">
+            <li @onclick="() => SelectOption()">Opción 1</li>
+            <li @onclick="() => SelectOption()">Opción 2</li>
+            <li @onclick="() => SelectOption()">Opción 3</li>
+        </ul>
+    }
+</div>
 @code{
+    private bool IsDropdownVisible = false;
+    private string DropdownStyle = "";
+
+    private void ShowDropdown(MouseEventArgs e)
+    {
+        // Ajusta la posición al lugar del clic
+        DropdownStyle = $"top: {e.PageY}px; left: {e.PageX}px;";
+        IsDropdownVisible = true;
+    }
+
+    public void CloseDropdown()
+    {
+        IsDropdownVisible = false;
+        StateHasChanged();
+    }
+    private void SelectOption()
+    {
+        Console.WriteLine("Opcion seleccionada");
+    }
     private IJSObjectReference? module;
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -159,6 +189,12 @@ else
         }
         return text;
     }
+    private string PrintVerse(Verse verse){
+        string text = "";
+        text+=ToSuperscript(verse.verse)+" ";
+        text+=verse.text;
+        return text;
+    }
     private static string ToSuperscript(int number)
     {
         var superscriptDigits = new Dictionary<char, char>
@@ -206,5 +242,9 @@ else
     private string GetNextBook(string book_id){
         int current = books!.FindIndex(b => b.id == book_id);
         return books[current + 1].id;
+    }
+
+    private void DisplayCollections(){
+
     }
 }
