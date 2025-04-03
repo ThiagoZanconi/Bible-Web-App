@@ -3,34 +3,81 @@
 @using BlazorApp.Model
 @inject IBibleApiService BibleApiService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@rendermode InteractiveServer
 
-<div class="text-center"> @name </div>
-@if(verses!=null){
-    <VersesComponent verses="verses"/>
-}
-else{
-    <div>No verses Found in this collection</div>
-}
+<div class="px-3">
+    <p class="fs-5 fw-bold text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        @name
+    </p>
+</div>
+<div class="px-5 mt-3">
+    @foreach(string chapter in ChapterVerseDictionary.Keys){
+        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+            @chapter
+        </pre>
+        <hr>
+        @foreach(Verse verse in ChapterVerseDictionary[chapter]){
+            <div class="col d-flex justify-content-between">
+                <pre class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+                    @PrintVerse(verse)
+                </pre>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3" @onclick="() => DeleteVerseFromCollection(verse)">
+                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                    </button>
+                </div>
+            </div>
+        }   
+    }
+</div>
 
 @code{
     [Parameter]
     public string name { get; set; } = String.Empty;
-    private List<Verse>? verses;
+    private List<Verse> verses { get; set; } = new();
+    private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender){
             await FetchVerses();
+            SetChapters();
             StateHasChanged();
         }
     }
-
+    private void SetChapters(){
+        foreach(var verse in verses){
+            var chapter = verse.book+" "+verse.chapter;
+            if (!ChapterVerseDictionary.ContainsKey(chapter))
+            {
+                ChapterVerseDictionary[chapter] = new List<Verse>();
+            }
+            ChapterVerseDictionary[chapter].Add(verse);
+        }
+    }
     private async Task FetchVerses(){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         if(token!=null){
-            verses = await BibleApiService.GetVerseCollectionAsync(token,name);
+            verses = await BibleApiService.GetVerseCollectionAsync(token,name)?? new();
         }
         
+    }
+    private string PrintVerse(Verse verse){
+        string text="";
+        text+=ToSuperscript(verse.verse)+" ";
+        text+=verse.text;
+        return text;
+    }
+    private static string ToSuperscript(int number)
+    {
+        var superscriptDigits = new Dictionary<char, char>
+        {
+            { '0', '⁰' }, { '1', '¹' }, { '2', '²' }, { '3', '³' }, { '4', '⁴' },
+            { '5', '⁵' }, { '6', '⁶' }, { '7', '⁷' }, { '8', '⁸' }, { '9', '⁹' }
+        };
+
+        return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
+    }
+    private void DeleteVerseFromCollection(Verse verse){
+
     }
 
 }
