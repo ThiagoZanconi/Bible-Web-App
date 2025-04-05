@@ -1,8 +1,10 @@
+@using BlazorApp.Components.Services
 @using BlazorApp.Model
 @using System.Net.Http.Headers
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@inject IBibleApiService BibleApiService
 
 <div class="container">
     <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
@@ -70,22 +72,8 @@
     private async Task<bool> DeleteCollectionRequest(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         if(token!=null){
-            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5120/api/collection/"+name);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await Http.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Coleccion eliminada exitosamente");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
+            return await BibleApiService.DeleteCollectionAsync(token, name);
         }
-        StateHasChanged();
         return false;
     }
 

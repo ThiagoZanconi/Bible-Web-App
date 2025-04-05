@@ -1,5 +1,7 @@
 @using System.Net.Http.Headers
+@using BlazorApp.Components.Services
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IBibleApiService BibleApiService
 
 <div class="text-center mx-auto" >     
     <EditForm Model="@model" OnValidSubmit="@SaveCollection" class="needs-validation"> 
@@ -37,19 +39,7 @@
     private async Task CreateCollection(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         if(token!=null){
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5120/api/collection/"+name);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await Http.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Coleccion creada exitosamente");
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
+            await BibleApiService.PostCollectionAsync(token, name);
         }
         StateHasChanged();
     }

@@ -1,6 +1,8 @@
 @page "/search"
+@using BlazorApp.Components.Services
 @using BlazorApp.Model
 @rendermode InteractiveServer
+@inject IBibleApiService BibleApiService
 
 <div class="px-8" @onclick="CloseDropdown"> 
     <div >
@@ -91,19 +93,12 @@
         StateHasChanged();
     }
     private async Task FetchVerses(string keywords){
-        try{
-            if(selectedBook == "Book" || selectedBook == "ANY")
-            {
-                verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/keywords/"+keywords);
-            }
-            else{
-                verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/"+selectedBook+"/keywords/"+keywords);
-            }
-        }
-        catch (Exception ex)
+        if(selectedBook == "Book" || selectedBook == "ANY")
         {
-            verses = null;
-            Console.WriteLine($"Error al obtener datos: {ex.Message}");
+            verses = await BibleApiService.GetVersesByKeywordsAsync(keywords);
+        }
+        else{
+            verses = await BibleApiService.GetVersesInBookByKeywordsAsync(selectedBook, keywords);
         }
     }
     private void EnterPressed(KeyboardEventArgs e)
