@@ -10,14 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<TokenState>();
 
+var apiBaseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");
+
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri("http://localhost:5120")
+    BaseAddress = new Uri(apiBaseUrl!)
 });
 
 builder.Services.AddHttpClient<IBibleApiService, BibleApiService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5120/");
+    client.BaseAddress = new Uri(apiBaseUrl!);
 });
 
 var app = builder.Build();
