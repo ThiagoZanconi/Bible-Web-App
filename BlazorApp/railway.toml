@@ -1,0 +1,4 @@
+[build]
+builder = "dockerfile"
+context = "./BlazorApp"
+dockerfile = "Dockerfile"
