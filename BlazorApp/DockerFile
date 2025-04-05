@@ -1,21 +1,20 @@
-# Usamos la imagen oficial del SDK 9 (puede ser preview, ajustar si cambia el tag)
+# Etapa de build
 FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copiar y restaurar dependencias
-COPY *.csproj ./
+# Copiamos el proyecto y restauramos dependencias
+COPY BlazorApp.csproj ./
 RUN dotnet restore
 
-# Copiar el resto del código y compilar
+# Copiamos el código y publicamos
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app
 
-# Imagen de runtime
+# Etapa de runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=build /app .
 
-# Puerto para Railway (puede necesitar ser 8080)
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
