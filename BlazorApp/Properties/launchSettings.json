@@ -18,6 +18,16 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      },
+      "Production": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": true,
+        "applicationUrl": "https://Bible-Web-App.up.railway.app/",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Production",
+          "API_BASE_URL": "https://Bible-Web-App.up.railway.app/"
+        }
       }
     }
-  }
+}
