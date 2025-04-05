@@ -73,7 +73,7 @@
                 var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
                 var userName = nameClaim?.Value ?? "";
                 selectedComponent = GetLoggedComponent(userName);
-                StateHasChanged();
+                InvokeAsync(StateHasChanged);
             }
     }
 

@@ -57,13 +57,22 @@
     }
 </div>
 @code{
+    [Inject] 
+    private HttpClient Http { get; set; } = default!;
+    private List<Book>? books;
+    private List<Chapter>? chapters;
+    private List<Verse>? verses;
+    private VersesComponent? versesComponent;
+    private string expandedBook = "";
+    private int expandedChapter = 0;
     private IJSObjectReference? module;
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import",
-                "./Components/Pages/Home.razor.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import","./Components/Pages/Home.razor.js");
+            books = await BibleApiService.GetBooksAsync();
+            StateHasChanged();
         }
     }
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -83,19 +92,6 @@
         if(module!=null){
             await module.InvokeVoidAsync("scrollToPrevButton");
         }
-    } 
-
-    [Inject] 
-    private HttpClient Http { get; set; } = default!;
-    private List<Book>? books;
-    private List<Chapter>? chapters;
-    private List<Verse>? verses;
-    private VersesComponent? versesComponent;
-    private string expandedBook = "";
-    private int expandedChapter = 0;
-    protected override async Task OnInitializedAsync()
-    {
-        books = await BibleApiService.GetBooksAsync();
     }
     private void SetBook(string book_id)
     {
