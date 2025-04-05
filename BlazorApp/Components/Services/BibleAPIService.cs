@@ -4,6 +4,9 @@ using BlazorApp.Model;
 namespace BlazorApp.Components.Services{
     public interface IBibleApiService
     {
+        Task<List<Book>?> GetBooksAsync();
+        Task<List<Chapter>?> GetChaptersAsync(string book_id);
+        Task<List<Verse>?> GetVersesAsync(string book_id, int chapter);
         Task<List<Collection>?> GetCollectionsAsync(string token);
         Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
         Task PostVerseToCollectionAsync(string token, string name, Verse verse);
@@ -13,6 +16,53 @@ namespace BlazorApp.Components.Services{
         public BibleApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+        public async Task<List<Book>?> GetBooksAsync(){
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible");
+
+            var response = await _httpClient.SendAsync(request);
+            try{
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<Book>>();  
+                }
+            }
+            catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
+            }
+            return null;
+        }
+
+        public async Task<List<Chapter>?> GetChaptersAsync(string book_id){
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+book_id);
+
+            var response = await _httpClient.SendAsync(request);
+            try{
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<Chapter>>();  
+                }
+            }
+            catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
+            }
+            return null;
+        }
+
+        public async Task<List<Verse>?> GetVersesAsync(string book_id, int chapter){
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+book_id+"/"+chapter);
+
+            var response = await _httpClient.SendAsync(request);
+            try{
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<Verse>>();  
+                }
+            }
+            catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
+            }
+            return null;
         }
 
         public async Task<List<Collection>?> GetCollectionsAsync(string token){

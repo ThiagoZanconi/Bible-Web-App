@@ -1,6 +1,6 @@
 {
-  "name": "MyBlazorPwa",
-  "short_name": "MyBlazorPwa",
+  "name": "Bible Online",
+  "short_name": "Bible",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

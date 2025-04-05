@@ -1,10 +1,13 @@
 ﻿@page "/"
+@using BlazorApp.Components.Services
 @using BlazorApp.Model
 @using BlazorApp.Components.Pages.HomeComponents
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @implements IAsyncDisposable
 @inject IJSRuntime JS
+@inject IBibleApiService BibleApiService
+
 <PageTitle>Home</PageTitle>
 
 <h1 class="text-primary text-center">BIBLE</h1>
@@ -20,7 +23,7 @@
             {
                 <li>
                     <div class="container text-center mt-1 w-50">
-                        <BookButton text=@book.name OnClick="() => FetchBook(book.id)" />
+                        <BookButton text=@book.name OnClick="() => FetchChapters(book.id)" />
                     </div>
                     @if (expandedBook.Equals(book.id) && chapters!=null)
                     {
@@ -30,7 +33,7 @@
                                 {
                                     int chapterIndex = i;
                                     <div class="col-2 p-1">
-                                        <button @onclick="() => FetchChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
+                                        <button @onclick="() => FetchVerses(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
                                     </div>
                                     @if (expandedChapter == i && verses!=null)
                                     {
@@ -92,7 +95,7 @@
     private int expandedChapter = 0;
     protected override async Task OnInitializedAsync()
     {
-        await FetchBible();
+        books = await BibleApiService.GetBooksAsync();
     }
     private void SetBook(string book_id)
     {
@@ -109,50 +112,24 @@
         else
             expandedChapter = index;
     }
-    private async Task FetchBible(){
-        try
-        {
-            books = await Http.GetFromJsonAsync<List<Book>>("http://localhost:5120/api/bible");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener datos: {ex.Message}");
-        }
+    private async Task FetchChapters(string book_id){
+        chapters = await BibleApiService.GetChaptersAsync(book_id);
+        SetBook(book_id);
     }
-    private async Task FetchBook(string book_id){
-        try
-        {
-            chapters = await Http.GetFromJsonAsync<List<Chapter>>("http://localhost:5120/api/bible/"+book_id);
-            SetBook(book_id); 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener datos: {ex.Message}");
-        }
-    }
-    private async Task FetchChapter(string book_id, int chapter){
-        Console.WriteLine("Fetch Verses");
-        try
-        {
-            Console.WriteLine("http://localhost:5120/api/bible/"+book_id+"/"+chapter);
-            verses = await Http.GetFromJsonAsync<List<Verse>>("http://localhost:5120/api/bible/"+book_id+"/"+chapter);
-            SetChapter(chapter);
-            await ScrollToPrevButton();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener datos: {ex.Message}");
-        }
+    private async Task FetchVerses(string book_id, int chapter){
+        verses = await BibleApiService.GetVersesAsync(book_id,chapter);
+        SetChapter(chapter);
+        await ScrollToPrevButton();
     }
     private async Task SetPrevChapter(string current_book_id, int current_chapter){
         try{
             if(current_chapter > 1){
-            await FetchChapter(current_book_id, current_chapter-1);
+            await FetchVerses(current_book_id, current_chapter-1);
             }
             else{
                 string book_id = GetPrevBook(current_book_id);
-                await FetchBook(book_id);
-                await FetchChapter(book_id, chapters!.Count);
+                await FetchChapters(book_id);
+                await FetchVerses(book_id, chapters!.Count);
             }
         }
         catch(ArgumentOutOfRangeException e){
@@ -166,12 +143,12 @@
     private async Task SetNextChapter(string current_book_id, int current_chapter){
         try{
             if(current_chapter < chapters!.Count){
-            await FetchChapter(current_book_id, current_chapter+1);
+            await FetchVerses(current_book_id, current_chapter+1);
             }
             else{
                 string book_id = GetNextBook(current_book_id);
-                await FetchBook(book_id);
-                await FetchChapter(book_id, 1);
+                await FetchChapters(book_id);
+                await FetchVerses(book_id, 1);
             }
         }
         catch(ArgumentOutOfRangeException e){
