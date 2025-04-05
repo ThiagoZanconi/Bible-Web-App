@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
 WORKDIR /src
 
 # Copiamos el proyecto y restauramos dependencias
-COPY BlazorApp.csproj ./
+COPY ./BlazorApp/BlazorApp.csproj ./
 RUN dotnet restore
 
 # Copiamos el código y publicamos
