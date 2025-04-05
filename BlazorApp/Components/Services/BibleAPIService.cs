@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using BlazorApp.model;
 using BlazorApp.Model;
 
 namespace BlazorApp.Components.Services{
@@ -11,6 +12,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
         Task<List<Collection>?> GetCollectionsAsync(string token);
         Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
+        Task<string?> PostLogin(UserLogin user);
         Task PostCollectionAsync(string token, string name);
         Task PostVerseToCollectionAsync(string token, string name, Verse verse);
         Task<bool> DeleteCollectionAsync(string token, string name);
@@ -129,6 +131,23 @@ namespace BlazorApp.Components.Services{
             }
             catch(Exception e){
                 Console.WriteLine("Error: "+e.Message);
+            }
+            return null;
+        }
+
+        public async Task<string?> PostLogin(UserLogin user){
+            try{
+                var response = await _httpClient.PostAsJsonAsync("api/login", user);
+                if(response.IsSuccessStatusCode){
+                    var body = await response.Content.ReadFromJsonAsync<Token>();
+                    if(body!=null){
+                        return body.token;
+                    }      
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
             return null;
         }

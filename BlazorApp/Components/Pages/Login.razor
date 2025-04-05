@@ -1,10 +1,13 @@
 @page "/login"
+@using BlazorApp.Components.Services
+@using System.IdentityModel.Tokens.Jwt
 @using BlazorApp.Model
 @using BlazorApp.model
-@using System.IdentityModel.Tokens.Jwt;
+@rendermode InteractiveServer
 @inject TokenState TokenState
 @inject NavigationManager Navigation
-@rendermode InteractiveServer
+@inject IBibleApiService BibleApiService
+
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <EditForm Model="@user" OnValidSubmit="@login" class="needs-validation">
@@ -27,14 +30,9 @@
                 <div class="mb-3 row">
                     <button type="submit" class="btn btn-primary mx-auto" style="width:120px;">Login</button>
                 </div>
-                @if(statusCode == 404){
+                @if(!loginSuccesful){
                     <div class="mb-3 row">
                         <label class="text-danger text-center" aria-required>Error: Invalid Credentials</label>
-                    </div>
-                }
-                @if(statusCode == 500){
-                    <div class="mb-3 row">
-                        <label class="text-danger text-center" aria-required>Auth Error</label>
                     </div>
                 }
             </div>
@@ -46,33 +44,16 @@
     [Inject] 
     private HttpClient Http { get; set; } = default!;
     private UserLogin user = new();
-    private int statusCode = 200;
+    private bool loginSuccesful = true;
     private async Task login()
     {
-        try
-        {
-            var response = await Http.PostAsJsonAsync("http://localhost:5120/api/login", user);
-            
-            if(response.IsSuccessStatusCode){
-                statusCode = 200;
-                var body = await response.Content.ReadFromJsonAsync<Token>();
-                if(body!=null){
-                    var token = body.token;
-                    await SaveToken(token);
-                    Navigation.NavigateTo("");
-                }      
-            }
-            else
-                if(response.StatusCode == System.Net.HttpStatusCode.NotFound){
-                    statusCode = 404;
-                }
-                else{
-                    statusCode = 500;
-                }
+        string? token = await BibleApiService.PostLogin(user);
+        if(token!=null){
+            await SaveToken(token);
+            Navigation.NavigateTo("");
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error: " + ex.Message);
+        else{
+            loginSuccesful = false;
         }
     }
     private async Task SaveToken(string jwt)
