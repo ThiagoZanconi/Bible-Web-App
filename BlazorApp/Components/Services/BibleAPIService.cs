@@ -12,6 +12,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
         Task<List<Collection>?> GetCollectionsAsync(string token);
         Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
+        Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
         Task PostCollectionAsync(string token, string name);
         Task PostVerseToCollectionAsync(string token, string name, Verse verse);
@@ -133,6 +134,21 @@ namespace BlazorApp.Components.Services{
                 Console.WriteLine("Error: "+e.Message);
             }
             return null;
+        }
+
+        public async Task<bool> GetValidToken(string token){
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/login");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+                return false;
+            }
         }
 
         public async Task<string?> PostLogin(UserLogin user){

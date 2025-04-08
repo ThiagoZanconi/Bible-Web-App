@@ -1,11 +1,13 @@
 ﻿@inherits LayoutComponentBase
 @using System.IdentityModel.Tokens.Jwt;
+@using BlazorApp.Components.Services
 @using BlazorApp.Model
 @using Layout.Components
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@inject IBibleApiService BibleApiService
 
 <div class="page">
     @if(expand){
@@ -67,14 +69,17 @@
 
     private void SetUserName(string? token)
     {
-        if (!string.IsNullOrEmpty(token)){
-                var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-                var userName = nameClaim?.Value ?? "";
-                selectedComponent = GetLoggedComponent(userName);
-                InvokeAsync(StateHasChanged);
-            }
+        if(!string.IsNullOrEmpty(token)){
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var nameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            var userName = nameClaim?.Value ?? "";
+            selectedComponent = GetLoggedComponent(userName);
+        }
+        else{
+            selectedComponent = notLoggedComponent;
+        }
+        InvokeAsync(StateHasChanged);
     }
 
     private ComponentMetadata GetLoggedComponent(string userName){
@@ -93,6 +98,12 @@
     {
         if(firstRender){
             var token = await localStorage.GetItemAsync<string>("jwtToken");
+            if(token!=null){
+                var logged = await BibleApiService.GetValidToken(token);
+                if(!logged){
+                    token = null;
+                }
+            }
             SetUserName(token);
         }
     }
