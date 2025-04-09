@@ -57,7 +57,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesAsync(string book_id, int chapter){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+book_id+"/"+chapter);
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/"+book_id+"/"+chapter);
 
             var response = await _httpClient.SendAsync(request);
             try{
@@ -73,7 +73,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/keywords/"+keywords);
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/keywords/"+keywords);
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)
@@ -88,7 +88,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+book_id+"/keywords/"+keywords);
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/"+book_id+"/keywords/"+keywords);
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)
