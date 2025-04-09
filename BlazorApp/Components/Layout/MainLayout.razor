@@ -24,13 +24,14 @@
     }
     <main class="w-100">
         <div class="top-row d-flex justify-content-between px-4">
-                <div class="navbar">
-                    @if(!expand){
-                        <button class="navbar-toggler" @onclick="ToggleNav">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    }
-                </div>
+            <div class="navbar">
+                @if(!expand){
+                    <button class="navbar-toggler" @onclick="ToggleNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                }
+            </div>
+            <BlazorApp.Components.Layout.Components.LanguageDropDown></BlazorApp.Components.Layout.Components.LanguageDropDown>
             <a href="http://localhost:5120/swagger/index.html" target="_blank">API Doc</a>
         </div>
 
@@ -59,7 +60,6 @@
     private void ToggleNav(){
         expand = !expand;
     }
-
     private async Task Logout()
     {
         await localStorage.RemoveItemAsync("jwtToken");

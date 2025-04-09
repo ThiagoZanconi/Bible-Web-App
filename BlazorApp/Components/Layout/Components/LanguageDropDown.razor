@@ -1,0 +1,31 @@
+@using BlazorApp.Model
+@inject TokenState TokenState
+
+<div class="w-100 mx-auto">
+    <div class="dropdown text-center">
+        <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
+            @selectedLanguage
+        </button>
+        <div class="@DropDownClasses w-100" aria-labelledby="dropdownMenuButton">
+            @foreach(var lan in languages){
+                <div class="dropdown-item w-100 text-center" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code{
+    private bool show;
+    private string DropDownClasses => show ? "dropdown-menu show d-grid" : "dropdown-menu d-none";
+    private string selectedLanguage = languages[0];
+    private static string [] languages = {"kjv", "bes"};
+    private void ToggleDropdown(){
+        show = !show;
+    }
+    private void SetSelectedLanguage(string lan){
+        selectedLanguage = lan;
+        TokenState.SetLanguage(lan);
+        ToggleDropdown();
+    }
+
+}

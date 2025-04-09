@@ -20,9 +20,11 @@ namespace BlazorApp.Components.Services{
     }
     public class BibleApiService: IBibleApiService{
         private readonly HttpClient _httpClient;
-        public BibleApiService(HttpClient httpClient)
+        private readonly TokenState tokenState;
+        public BibleApiService(HttpClient httpClient, TokenState state)
         {
             _httpClient = httpClient;
+            tokenState = state;
         }
         public async Task<List<Book>?> GetBooksAsync(){
             var request = new HttpRequestMessage(HttpMethod.Get, "api/bible");
@@ -57,7 +59,8 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesAsync(string book_id, int chapter){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/"+book_id+"/"+chapter);
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+lan+"/"+book_id+"/"+chapter);
 
             var response = await _httpClient.SendAsync(request);
             try{
