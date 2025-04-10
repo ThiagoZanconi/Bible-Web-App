@@ -1,14 +1,15 @@
 @using BlazorApp.Model
 @inject TokenState TokenState
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="w-100 mx-auto">
     <div class="dropdown text-center">
         <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
             @selectedLanguage
         </button>
-        <div class="@DropDownClasses w-100" aria-labelledby="dropdownMenuButton">
+        <div class="@DropDownClasses dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
             @foreach(var lan in languages){
-                <div class="dropdown-item w-100 text-center" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
+                <div class="dropdown-item w-50 text-center" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
             }
         </div>
     </div>
@@ -16,16 +17,41 @@
 
 @code{
     private bool show;
-    private string DropDownClasses => show ? "dropdown-menu show d-grid" : "dropdown-menu d-none";
+    private string DropDownClasses => show ? "show d-grid" : "d-none";
     private string selectedLanguage = languages[0];
     private static string [] languages = {"kjv", "bes"};
     private void ToggleDropdown(){
         show = !show;
     }
-    private void SetSelectedLanguage(string lan){
-        selectedLanguage = lan;
-        TokenState.SetLanguage(lan);
+    private async void SetSelectedLanguage(string lan){
+        await localStorage.SetItemAsync("language", lan);
         ToggleDropdown();
+        SetLanguage(lan);
+    }
+
+    private async Task LoadLanguage(){
+        var language = await localStorage.GetItemAsync<string>("language");
+        if(language!=null){
+            SetLanguage(language);
+        }
+        else{
+            SetLanguage(selectedLanguage);
+        }
+    }
+
+    private void SetLanguage(string lan){
+        TokenState.SetLanguage(lan);
+        selectedLanguage = lan;
+        show = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            await LoadLanguage();
+        }
+
     }
 
 }
