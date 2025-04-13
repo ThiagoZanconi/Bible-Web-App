@@ -2,22 +2,20 @@
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<div class="w-100 mx-auto">
-    <div class="dropdown text-center">
-        <button class="btn btn-secondary dropdown-toggle w-25" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
-            @selectedLanguage
-        </button>
-        <div class="@DropDownClasses dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-            @foreach(var lan in languages){
-                <div class="dropdown-item w-50 text-center" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
-            }
-        </div>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="true" @onclick=ToggleDropdown>
+        @selectedLanguage
+    </button>
+    <div class="@DropDownClasses text-center dropdown-menu" aria-labelledby="dropdownMenuButton">
+        @foreach(var lan in languages){
+            <div class="dropdown-item" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
+        }
     </div>
 </div>
 
 @code{
     private bool show;
-    private string DropDownClasses => show ? "show d-grid" : "d-none";
+    private string DropDownClasses => show ? "show" : "d-none";
     private string selectedLanguage = languages[0];
     private static string [] languages = {"kjv", "bes"};
     private void ToggleDropdown(){

@@ -7,7 +7,6 @@
 @inject TokenState TokenState
 @inject NavigationManager Navigation
 @inject IBibleApiService BibleApiService
-
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <EditForm Model="@user" OnValidSubmit="@login" class="needs-validation">
@@ -41,8 +40,6 @@
 </EditForm>
 
 @code{
-    [Inject] 
-    private HttpClient Http { get; set; } = default!;
     private UserLogin user = new();
     private bool loginSuccesful = true;
     private async Task login()

@@ -14,6 +14,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
         Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
+        Task<bool> PostRegister(UserRegister user);
         Task PostCollectionAsync(string token, string name);
         Task PostVerseToCollectionAsync(string token, string name, Verse verse);
         Task<bool> DeleteCollectionAsync(string token, string name);
@@ -169,6 +170,20 @@ namespace BlazorApp.Components.Services{
                 Console.WriteLine("Error: " + ex.Message);
             }
             return null;
+        }
+
+        public async Task<bool> PostRegister(UserRegister user){
+            try{
+                var response = await _httpClient.PostAsJsonAsync("api/register", user);
+                if(response.IsSuccessStatusCode){
+                    return true;  
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            return false;
         }
 
         public async Task PostCollectionAsync(string token, string name){

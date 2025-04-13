@@ -1,31 +1,59 @@
 @page "/register"
+@inject IBibleApiService BibleApiService
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject TokenState TokenState
+@using BlazorApp.Components.Services
+@using BlazorApp.Model
+@using BlazorApp.model
 @rendermode InteractiveServer
-<form class="needs-validation">
+
+<EditForm Model="@user" OnValidSubmit="@UserRegister" class="needs-validation">
     <div class="d-flex justify-content-center p-3">
         
             <div class="w-100">
+                <DataAnnotationsValidator />
                 <div class="mb-3 row p-3">
-                    <label class="col-sm-2 col-form-label" >Username</label>
+                    <label class="col-sm-2 col-form-label" >Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" required placeholder="Username">
+                        <InputText type="text" class="form-control" required placeholder="Enter name" @bind-Value="user.Name" />
                     </div>
                 </div>
                 <div class="mb-3 row p-3">
                     <label class="col-sm-2 col-form-label" >Email</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" required placeholder="Enter email">
+                        <InputText type="text" class="form-control" required placeholder="Enter email" @bind-Value="user.Email" />
                     </div>
                 </div>
                 <div class="mb-3 row p-3">
                     <label class="col-sm-2 col-form-label" aria-required>Password</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword" required  placeholder="Password" >
+                        <InputText type="password" class="form-control" id="inputPassword" required  placeholder="Password" @bind-Value="user.Password"/>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <button type="submit" class="btn btn-primary mx-auto" style="width:120px;">Register</button>
                 </div>
+                @if(!registerSuccesful){
+                    <div class="mb-3 row">
+                        <label class="text-danger text-center" aria-required>Error: Email already used</label>
+                    </div>
+                }
             </div>
-
     </div>
-</form>
+</EditForm>
+
+@code{
+    private UserRegister user = new();
+    private bool registerSuccesful = true;
+    private async Task UserRegister()
+    {
+        registerSuccesful = await BibleApiService.PostRegister(user);
+        if(registerSuccesful){
+            Navigation.NavigateTo("");
+        }
+        else{
+            StateHasChanged();
+        }
+    }
+}
