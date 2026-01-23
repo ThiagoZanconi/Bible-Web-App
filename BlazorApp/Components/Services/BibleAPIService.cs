@@ -11,7 +11,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords);
         Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
         Task<List<Collection>?> GetCollectionsAsync(string token);
-        Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
+        Task<List<Verse>?> GetVerseCollectionAsync(string token, string name, string translation_id);
         Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
         Task<bool> PostRegister(UserRegister user);
@@ -123,8 +123,8 @@ namespace BlazorApp.Components.Services{
             return null;
         }
 
-        public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection/"+name);
+        public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name, string translation_id){
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection/"+name+"/"+translation_id);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
