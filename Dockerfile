@@ -1,5 +1,5 @@
 # Etapa de build
-FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
 WORKDIR /src
 
 # Copiamos el proyecto y restauramos dependencias
@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish -c Release -o /app
 
 # Etapa de runtime
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-preview
 WORKDIR /app
 COPY --from=build /app .
 
