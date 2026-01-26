@@ -72,7 +72,7 @@
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import","./Components/Pages/Home.razor.js");
             books = await BibleApiService.GetBooksAsync();
-            StateHasChanged();
+            StateHasChanged(); 
         }
     }
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -113,7 +113,7 @@
         SetBook(book_id);
     }
     private async Task FetchVerses(string book_id, int chapter){
-        verses = await BibleApiService.GetVersesAsync(book_id,chapter);
+        verses = await BibleApiService.GetVersesAsync(book_id, chapter);
         SetChapter(chapter);
         await ScrollToPrevButton();
     }

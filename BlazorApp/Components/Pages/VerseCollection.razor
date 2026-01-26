@@ -55,13 +55,9 @@
         }
     }
     private async Task FetchVerses(){
-        var language = await localStorage.GetItemAsync<string>("language");
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         if(token!=null){
-            if(language==null){
-                language="KJV";
-            }
-            verses = await BibleApiService.GetVerseCollectionAsync(token,name, language)?? new();
+            verses = await BibleApiService.GetVerseCollectionAsync(token,name)?? new();
         }
         
     }

@@ -11,7 +11,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords);
         Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
         Task<List<Collection>?> GetCollectionsAsync(string token);
-        Task<List<Verse>?> GetVerseCollectionAsync(string token, string name, string translation_id);
+        Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
         Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
         Task<bool> PostRegister(UserRegister user);
@@ -28,7 +28,8 @@ namespace BlazorApp.Components.Services{
             tokenState = state;
         }
         public async Task<List<Book>?> GetBooksAsync(){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible");
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}");
 
             var response = await _httpClient.SendAsync(request);
             try{
@@ -44,7 +45,8 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Chapter>?> GetChaptersAsync(string book_id){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+book_id);
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}");
 
             var response = await _httpClient.SendAsync(request);
             try{
@@ -61,7 +63,7 @@ namespace BlazorApp.Components.Services{
 
         public async Task<List<Verse>?> GetVersesAsync(string book_id, int chapter){
             string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/"+lan+"/"+book_id+"/"+chapter);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/{chapter}");
 
             var response = await _httpClient.SendAsync(request);
             try{
@@ -123,8 +125,9 @@ namespace BlazorApp.Components.Services{
             return null;
         }
 
-        public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name, string translation_id){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection/"+name+"/"+translation_id);
+        public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name){
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection/"+name+"/"+lan);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
