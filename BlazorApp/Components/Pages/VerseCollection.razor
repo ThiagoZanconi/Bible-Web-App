@@ -46,7 +46,7 @@
     }
     private void SetChapters(){
         foreach(var verse in verses){
-            var chapter = verse.book+" "+verse.chapter;
+            var chapter = verse.bookId+" "+verse.chapter;
             if (!ChapterVerseDictionary.ContainsKey(chapter))
             {
                 ChapterVerseDictionary[chapter] = new List<Verse>();
@@ -63,7 +63,7 @@
     }
     private string PrintVerse(Verse verse){
         string text="";
-        text+=ToSuperscript(verse.verse)+" ";
+        text+=ToSuperscript(verse.vrs)+" ";
         text+=verse.text;
         return text;
     }

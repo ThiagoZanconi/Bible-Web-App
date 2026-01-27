@@ -3,21 +3,20 @@ namespace BlazorApp.Model{
     {
         public string id { get; set; } = string.Empty;
         public string name { get; set; } = string.Empty;
-        public int number { get; set; }
+        public string translationId { get; set; } = string.Empty;
     }
-    public class Chapter(string book_id, string book, int chapter)
+    public class Chapter(string bookId, int chp, string translationId)
     {
-        public string book_id { get; set; } = book_id;
-        public string book { get; set; } = book;
-        public int chapter { get; set; } = chapter;
+        public string bookId { get; set; } = bookId;
+        public int chp { get; set; } = chp;
+        public string translationId { get; set; } = translationId;
     }
-    public class Verse(string book_id, string book, int chapter, int verse, string text, string translation_id)
+    public class Verse(string bookId, int chapter, int vrs, string text, string translationId)
     {
-        public string book_id { get; set; } = book_id;
+        public string bookId { get; set; } = bookId;
         public int chapter { get; set; } = chapter;
-        public string book { get; set; } = book;
-        public int verse { get; set; } = verse;
+        public int vrs { get; set; } = vrs;
         public string text { get; set; } = text;
-        public string translation_id { get; set; } = translation_id;
+        public string translationId { get; set; } = translationId;
     }
 }

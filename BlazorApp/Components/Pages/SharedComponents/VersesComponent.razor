@@ -46,7 +46,8 @@
     }
     private void SetChapters(){
         foreach(var verse in verses){
-            var chapter = verse.book+" "+verse.chapter;
+            Console.WriteLine($"Processing verse: {verse.bookId} {verse.chapter}:{verse.vrs}");
+            var chapter = verse.bookId+" "+verse.chapter;
             if (!ChapterVerseDictionary.ContainsKey(chapter))
             {
                 ChapterVerseDictionary[chapter] = new List<Verse>();
@@ -78,7 +79,7 @@
     }
     private string PrintVerse(Verse verse){
         string text="";
-        text+=ToSuperscript(verse.verse)+" ";
+        text+=ToSuperscript(verse.vrs)+" ";
         text+=verse.text;
         return text;
     }
@@ -94,6 +95,7 @@
     }
     private async void SaveVerseToCollection(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
+        Console.WriteLine($"Saving verse {selectedVerse.bookId} {selectedVerse.chapter}:{selectedVerse.vrs} to collection {name}");
         if(token!=null){
             await BibleApiService.PostVerseToCollectionAsync(token, name, selectedVerse);
         }

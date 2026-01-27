@@ -79,7 +79,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/keywords/"+keywords);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/kjv/keywords/{keywords}");
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)
@@ -94,7 +94,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/bible/kjv/"+book_id+"/keywords/"+keywords);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/kjv/{book_id}/keywords/{keywords}");
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)
@@ -127,7 +127,7 @@ namespace BlazorApp.Components.Services{
 
         public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name){
             string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection/"+name+"/"+lan);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/collection/{name}/{lan}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
@@ -190,7 +190,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task PostCollectionAsync(string token, string name){
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/collection/"+name);
+            var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
@@ -205,7 +205,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task PostVerseToCollectionAsync(string token, string name, Verse verse){
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/collection/"+name+"/"+verse.book_id+"/"+verse.chapter+":"+verse.verse);
+            var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}/{verse.bookId}/{verse.chapter}:{verse.vrs}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
@@ -221,7 +221,7 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<bool> DeleteCollectionAsync(string token, string name){
-            var request = new HttpRequestMessage(HttpMethod.Delete, "api/collection/"+name);
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"api/collection/{name}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
