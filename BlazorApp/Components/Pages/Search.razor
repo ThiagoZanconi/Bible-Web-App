@@ -47,8 +47,12 @@
                     Search Verses
                 </button>
             </div>
-            @if(verses!=null){
-                <VersesComponent verses="verses" @ref="versesComponent"/>
+            @if (verses != null)
+            {
+                <VersesComponent
+                    verses="verses"
+                    @key="verses"
+                    @ref="versesComponent" />
             }
         </div>
     </div>
@@ -88,7 +92,7 @@
         ToggleDropdown();
     }
     private async void SearchVerses(){
-        string keywordsString = string.Join(", ", keywords);
+        string keywordsString = string.Join(",", keywords);
         await FetchVerses(keywordsString);
         StateHasChanged();
     }
@@ -100,6 +104,7 @@
         else{
             verses = await BibleApiService.GetVersesInBookByKeywordsAsync(selectedBook, keywords);
         }
+        await InvokeAsync(StateHasChanged);
     }
     private void EnterPressed(KeyboardEventArgs e)
     {

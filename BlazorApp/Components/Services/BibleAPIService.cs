@@ -79,7 +79,8 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/kjv/keywords/{keywords}");
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{keywords}");
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)
@@ -94,7 +95,8 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords){
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/kjv/{book_id}/keywords/{keywords}");
+            string lan = tokenState.Languaje;
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}");
             var response = await _httpClient.SendAsync(request);
             try{
                 if (response.IsSuccessStatusCode)

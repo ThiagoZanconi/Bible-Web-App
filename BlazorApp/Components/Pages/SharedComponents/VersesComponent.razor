@@ -46,7 +46,6 @@
     }
     private void SetChapters(){
         foreach(var verse in verses){
-            Console.WriteLine($"Processing verse: {verse.bookId} {verse.chapter}:{verse.vrs}");
             var chapter = verse.bookId+" "+verse.chapter;
             if (!ChapterVerseDictionary.ContainsKey(chapter))
             {
