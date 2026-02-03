@@ -28,11 +28,10 @@ namespace BlazorApp.Components.Services{
             tokenState = state;
         }
         public async Task<List<Book>?> GetBooksAsync(){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}");
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}");
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Book>>();  
@@ -45,11 +44,10 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Chapter>?> GetChaptersAsync(string book_id){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}");
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}");
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Chapter>>();  
@@ -62,11 +60,10 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesAsync(string book_id, int chapter){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/{chapter}");
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/{chapter}");
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Verse>>();  
@@ -79,10 +76,10 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{keywords}");
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{keywords}");
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Verse>>();  
@@ -95,10 +92,10 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}");
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}");
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Verse>>();  
@@ -111,11 +108,11 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Collection>?> GetCollectionsAsync(string token){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/collection");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                var request = new HttpRequestMessage(HttpMethod.Get, "api/collection");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Collection>>();  
@@ -128,12 +125,12 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<List<Verse>?> GetVerseCollectionAsync(string token, string name){
-            string lan = tokenState.Languaje;
-            var request = new HttpRequestMessage(HttpMethod.Get, $"api/collection/{name}/{lan}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/collection/{name}/{lan}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<List<Verse>>();  
@@ -146,18 +143,25 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<bool> GetValidToken(string token){
-            var request = new HttpRequestMessage(HttpMethod.Get, "api/login");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return true;
+                var request = new HttpRequestMessage(HttpMethod.Get, "api/login");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
+                    return false;
+                }
             }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-                return false;
+            catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
             }
+            return false;
         }
 
         public async Task<string?> PostLogin(UserLogin user){
@@ -192,26 +196,32 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task PostCollectionAsync(string token, string name){
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Coleccion creada exitosamente");
+                var response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Coleccion creada exitosamente");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
+                }
+            }catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
             }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
+        
         }
 
         public async Task PostVerseToCollectionAsync(string token, string name, Verse verse){
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}/{verse.bookId}/{verse.chapter}:{verse.vrs}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
             try{
+                var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}/{verse.bookId}/{verse.chapter}:{verse.vrs}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Verso agregado a la coleccion exitosamente");
@@ -223,23 +233,28 @@ namespace BlazorApp.Components.Services{
         }
 
         public async Task<bool> DeleteCollectionAsync(string token, string name){
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"api/collection/{name}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                Console.WriteLine("Coleccion eliminada exitosamente");
-                return true;
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"api/collection/{name}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Coleccion eliminada exitosamente");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
+                    return false;
+                }
+                
+            }catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
             }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-                return false;
-            }
+            return false;
         }
-        
     }
-
 }
