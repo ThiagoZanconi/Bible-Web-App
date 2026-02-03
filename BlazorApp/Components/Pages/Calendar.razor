@@ -1,0 +1,108 @@
+@page "/calendar"
+@using BlazorApp.Components.Services
+@using BlazorApp.Model
+@using System.Text.Json
+@using System.ComponentModel
+@inject ICalendarApiService CalendarApiService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h3 class="test">TEST</h3>
+<div class="px-3">
+    <div class="d-flex">
+        <h1> Orthodox Calendar </h1>
+        <button @onclick="() => setCalendar(julian)"> Julian </button>
+        <button @onclick="() => setCalendar(gregorian)"> Gregorian </button>
+    </div>
+    <div class="text-center p-3 m-3 border border-2 border-dark rounded">
+        @if (calendarDay != null){
+            <div class="d-flex gap-4">
+                <button class="button" @onclick= "() => setPreviousDay()">Prev</button>
+                <h2>@calendarDay.year, @calendarDay.month, @calendarDay.day </h2>
+                <button class="button" @onclick= "() => setNextDay()">Next</button>
+            </div>
+            <h2>@calendarDay.year, @calendarDay.month, @calendarDay.day </h2>
+            @if(calendarDay.titles!=null){
+                @foreach( var title in calendarDay.titles){
+                    <h3> @title </h3>
+                }
+            }
+            <h3></h3>
+            <h4> @calendarDay.fast_exception_desc </h4>
+            
+            @if(calendarDay.feasts!=null){
+                <h4> Feasts: </h4>
+                <ol class="plain-list">
+                    @foreach( var feast in calendarDay.feasts){
+                        <li> @feast </li>
+                    }
+                </ol>
+            }
+            
+            <h4> Saints: </h4>
+            <ol class="plain-list">
+                @foreach (var saint in calendarDay.saints){
+                    <li> @saint </li>
+                }
+            </ol>
+        }
+        else{
+            <p> Loading... </p>
+        }
+    </div>
+</div>
+
+@code{
+    private static string julian = "julian";
+    private static string gregorian = "gregorian";
+    private DateTime today = DateTime.Now;
+    private string calendarName { get; set; } = julian;
+    private CalendarDay? calendarDay;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender){
+            FetchCalendarToday();
+        }
+    }
+
+    private void FetchCalendarToday(){
+        InvokeAsync(async () =>
+        {
+            calendarDay = await CalendarApiService.GetToday(calendarName);
+            if(calendarDay != null){
+                foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(calendarDay))
+                {
+                    string name = descriptor.Name;
+                    object value = descriptor.GetValue(calendarDay)!;
+                    Console.WriteLine("{0}={1}", name, value);
+                }
+            }
+            
+            StateHasChanged();
+        });
+    }
+
+    private void FetchCalendarDay(string cal, int year, int month, int day){
+        InvokeAsync(async () =>
+        {
+            calendarDay = await CalendarApiService.GetCalendarDay(cal, year, month, day);
+            StateHasChanged();
+        });
+    }
+
+    protected void setCalendar(string calendar){
+        calendarName = calendar;
+        FetchCalendarToday();
+    } 
+
+    private void setPreviousDay(){
+        if(calendarDay != null)
+            FetchCalendarDay(calendarName, calendarDay.year, calendarDay.month, calendarDay.day-1);
+    }  
+
+    private void setNextDay(){
+        if(calendarDay != null)
+            FetchCalendarDay(calendarName, calendarDay.year, calendarDay.month, calendarDay.day+1);
+    } 
+
+}

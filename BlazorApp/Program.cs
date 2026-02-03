@@ -11,6 +11,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<TokenState>();
 
 var apiBaseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");
+var apiCalendarUrl = builder.Configuration.GetValue<string>("ApiCalendarUrl");
 
 builder.Services.AddScoped(sp => new HttpClient
 {
@@ -20,6 +21,11 @@ builder.Services.AddScoped(sp => new HttpClient
 builder.Services.AddHttpClient<IBibleApiService, BibleApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl!);
+});
+
+builder.Services.AddHttpClient<ICalendarApiService, CalendarApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiCalendarUrl!);
 });
 
 var app = builder.Build();
