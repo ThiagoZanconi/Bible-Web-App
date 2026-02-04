@@ -7,16 +7,20 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="px-3">
-    <div class="d-flex">
+    <div class="d-flex gap-3 justify-content-center align-items-center mt-3 mb-3">
         <h1> Orthodox Calendar </h1>
-        <button class="button" @onclick="() => setCalendar(julian)"> Julian </button>
-        <button class="button" @onclick="() => setCalendar(gregorian)"> Gregorian </button>
+        <button class="button @(calendarName==julian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(julian)"> Julian </button>
+        <button class="button @(calendarName==gregorian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(gregorian)"> Gregorian </button>
     </div>
     <div class="text-center p-3 m-3 border border-2 border-dark rounded">
         @if (calendarDay != null){
             <div class="d-flex gap-4 justify-content-center mb-3">
                 <button class="button" @onclick= "() => setPreviousDay()">Prev</button>
-                <h2>@calendarDay.year, @calendarDay.month, @calendarDay.day </h2>
+                <div class="alingn-items-center gap-1 ">
+                    <h2>@calendarDay.year, @calendarDay.month, @calendarDay.day </h2>
+                    <button class="text-button" @onclick= "() => FetchCalendarToday()">Today</button>
+                </div>
+                
                 <button class="button" @onclick= "() => setNextDay()">Next</button>
             </div>
             @if(calendarDay.titles!=null){
@@ -24,6 +28,7 @@
                     <h3> @title </h3>
                 }
             }
+            <h4> @calendarDay.fast_level_desc </h4>
             <h4> @calendarDay.fast_exception_desc </h4>
             
             @if(calendarDay.feasts!=null){
@@ -53,8 +58,8 @@
 @code{
     private static string julian = "julian";
     private static string gregorian = "gregorian";
-    private DateTime today = DateTime.Now;
-    private string calendarName { get; set; } = julian;
+    private string calendarName { get; set; } = gregorian;
+    private DateOnly gregorianDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     private CalendarDay? calendarDay;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -66,6 +71,7 @@
 
     private async Task FetchCalendarToday(){
         calendarDay = await CalendarApiService.GetToday(calendarName);
+        gregorianDate = DateOnly.FromDateTime(DateTime.Now);
         if(calendarDay != null){
             foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(calendarDay))
             {
@@ -75,29 +81,25 @@
             }
         }
         StateHasChanged();
-      
     }
 
     private async Task FetchCalendarDay(string cal, int year, int month, int day){
-        
         calendarDay = await CalendarApiService.GetCalendarDay(cal, year, month, day);
         StateHasChanged();
-   
     }
 
-    protected async void setCalendar(string calendar){
+    private async Task setCalendar(string calendar){
         calendarName = calendar;
-        await FetchCalendarToday();
+        await FetchCalendarDay(calendarName, gregorianDate.Year, gregorianDate.Month, gregorianDate.Day);
     } 
 
     private async void setPreviousDay(){
-        if(calendarDay != null)
-            await FetchCalendarDay(calendarName, calendarDay.year, calendarDay.month, calendarDay.day-1);
+        gregorianDate = gregorianDate.AddDays(-1);
+        await FetchCalendarDay(calendarName, gregorianDate.Year, gregorianDate.Month, gregorianDate.Day); 
     }  
 
     private async void setNextDay(){
-        if(calendarDay != null)
-            await FetchCalendarDay(calendarName, calendarDay.year, calendarDay.month, calendarDay.day+1);
-    } 
-
+        gregorianDate = gregorianDate.AddDays(1);
+        await FetchCalendarDay(calendarName, gregorianDate.Year, gregorianDate.Month, gregorianDate.Day);
+    }
 }
