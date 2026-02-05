@@ -15,18 +15,20 @@
             @chapter
         </pre>
         <hr>
-        @foreach(Verse verse in ChapterVerseDictionary[chapter]){
-            <div class="col d-flex justify-content-between">
-                <pre class="fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
-                    @PrintVerse(verse)
-                </pre>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3" @onclick="() => DeleteVerseFromCollection(verse)">
-                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
-                    </button>
+        <div class="bg-light p-3 rounded shadow w-full fs-5 fw-light">
+            @foreach(Verse verse in ChapterVerseDictionary[chapter]){
+                <div class="col d-flex justify-content-between">
+                    <pre class="text-start" style="white-space: pre-wrap; word-wrap: break-word;">
+                        @PrintVerse(verse)
+                    </pre>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3 background-black-hover" @onclick="() => DeleteVerseFromCollection(verse)">
+                            <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                        </button>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
         <hr> 
     }
 </div>
@@ -45,6 +47,7 @@
         }
     }
     private void SetChapters(){
+        verses.Sort((a, b) => a.vrs.CompareTo(b.vrs));
         foreach(var verse in verses){
             var chapter = verse.bookId+" "+verse.chapter;
             if (!ChapterVerseDictionary.ContainsKey(chapter))
