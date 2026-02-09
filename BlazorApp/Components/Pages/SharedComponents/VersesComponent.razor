@@ -5,7 +5,7 @@
 
 <div class="px-5">
     @foreach(string chapter in ChapterVerseDictionary.Keys){
-        <pre class="fs-7 fw-light text-center background-light-grey p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        <pre class="fs-5 fw-bold text-center background-light-grey p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
             @chapter
         </pre>
         <hr>
@@ -16,16 +16,27 @@
                         <hr>
                     }
                 <div class="d-flex justify-content-between">
-                    <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start p-3 w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="(e) => VerseSelected(verse,e)">
+                    <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start p-3 w-full" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(verse)">
                         @PrintVerse(verse)
                     </pre>
-                    @if (IsLoggedIn && selectedVerse == verse)
-                    {
-                        <button class="rounded add-button show text-center mx-3">
-                            +
-                        </button>
-                    }
+                    
                 </div>
+                <div class="px-3 dropdown-menu-custom @(selectedVerse==verse ? "show" : "")">
+                    <div class="text-center">
+                        @foreach(Collection collection in collections){
+                            <hr>
+                            <div class="d-flex justify-content-between px-3">
+                                <span class="fs-5 fw-bold my-auto">@collection.name</span>
+                                <button class="rounded add-button mx-3" @onclick="() => SaveVerseToCollection(collection.name)">
+                                    +
+                                </button>
+                            </div>  
+                        }
+                        <hr>
+                        <button class="rounded add-button" @onclick="() => CreateCollection()">New Collection</button>
+                    </div>
+                </div>
+                
                 @if (IsLoggedIn && selectedVerse == verse)
                     {
                         <hr>
@@ -35,25 +46,12 @@
     }
 </div>
 
-@if (IsDropdownVisible && IsLoggedIn)
-    {
-        <ul class="dropdown-menu-custom" style="@DropdownStyle">
-            @foreach(Collection collection in collections){
-                <li @onclick="() => SaveVerseToCollection(collection.name)">@collection.name</li>
-            }
-            <hr>
-            <li @onclick="() => CreateCollection()">New Collection</li>
-        </ul>
-    }
-
 @code{
     [Parameter]
     public List<Verse> verses { get; set; } = new();
     private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
     private Verse? selectedVerse;
-    private bool IsDropdownVisible = false;
     private bool IsLoggedIn = false;
-    private string DropdownStyle = "";
     private List<Collection> collections = new();
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -81,7 +79,7 @@
         }
     }
 
-    private void VerseSelected(Verse verse, MouseEventArgs e){
+    private void VerseSelected(Verse verse){
         if(selectedVerse == verse){
             selectedVerse = null;
         }
@@ -89,16 +87,7 @@
             selectedVerse = verse;
         }
     }
-    private void ShowDropdown(MouseEventArgs e)
-    {
-        DropdownStyle = $"top: {e.PageY}px; left: {e.PageX}px;";
-        IsDropdownVisible = true;
-    }
-    public void CloseDropdown()
-    {
-        IsDropdownVisible = false;
-        StateHasChanged();
-    }
+
     private string PrintVerse(Verse verse){
         string text="";
         text+=ToSuperscript(verse.vrs)+" ";

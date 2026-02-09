@@ -4,7 +4,7 @@
 @rendermode InteractiveServer
 @inject IBibleApiService BibleApiService
 
-<div class="px-8" @onclick="CloseDropdown"> 
+<div class="px-8"> 
     <div >
         <div class="w-100 mx-auto">
             <div class="dropdown text-center">
@@ -125,8 +125,5 @@
     }
     private void RemoveKeyword(string key){
         keywords.Remove(key);
-    }
-    private void CloseDropdown(){
-        versesComponent?.CloseDropdown();
     }
 }

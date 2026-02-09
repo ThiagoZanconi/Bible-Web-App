@@ -11,7 +11,7 @@
 <PageTitle>Home</PageTitle>
 
 <h1 class="text-primary text-center">BIBLE</h1>
-<div class="px-8" @onclick="CloseDropdown">
+<div class="px-8">
     @if (books is null)
     {
         <p class="text-center">Loading...</p>
@@ -154,8 +154,5 @@
     private string GetNextBook(string book_id){
         int current = books!.FindIndex(b => b.id == book_id);
         return books[current + 1].id;
-    }
-    private void CloseDropdown(){
-        versesComponent?.CloseDropdown();
     }
 }
