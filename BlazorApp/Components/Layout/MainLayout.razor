@@ -22,8 +22,8 @@
             </div>
         </nav>
     }
-    <main class="w-100">
-        <div class="top-row d-flex justify-content-between px-4">
+    <main class="w-100 background-soft-yellow min-vh-100 ">
+        <div class="top-row d-flex justify-content-between px-4 background-light-bronze">
             <div class="navbar">
                 @if(!expand){
                     <button class="navbar-toggler" @onclick="ToggleNav">
@@ -32,10 +32,10 @@
                 }
             </div>
             <BlazorApp.Components.Layout.Components.LanguageDropDown></BlazorApp.Components.Layout.Components.LanguageDropDown>
-            <a href="http://localhost:5120/swagger/index.html" target="_blank">API Doc</a>
+            <a href="http://localhost:8080/swagger/index.html" target="_blank">API Doc</a>
         </div>
 
-        <div class="content">
+        <div class="mb-5 mt-3">
             @Body
         </div>
     </main>

@@ -5,17 +5,36 @@
 
 <div class="px-5">
     @foreach(string chapter in ChapterVerseDictionary.Keys){
-        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        <pre class="fs-7 fw-light text-center background-light-grey p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
             @chapter
         </pre>
         <hr>
-        @foreach(Verse verse in ChapterVerseDictionary[chapter]){
-            <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="(e) => VerseSelected(verse,e)">
-                @PrintVerse(verse)
-            </pre>
-        }   
+        <div class="my-2 background-light-grey rounded shadow">
+            @foreach(Verse verse in ChapterVerseDictionary[chapter]){
+                @if (IsLoggedIn && selectedVerse == verse)
+                    {
+                        <hr>
+                    }
+                <div class="d-flex justify-content-between">
+                    <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start p-3 w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="(e) => VerseSelected(verse,e)">
+                        @PrintVerse(verse)
+                    </pre>
+                    @if (IsLoggedIn && selectedVerse == verse)
+                    {
+                        <button class="rounded add-button show text-center mx-3">
+                            +
+                        </button>
+                    }
+                </div>
+                @if (IsLoggedIn && selectedVerse == verse)
+                    {
+                        <hr>
+                    }
+            } 
+        </div>
     }
 </div>
+
 @if (IsDropdownVisible && IsLoggedIn)
     {
         <ul class="dropdown-menu-custom" style="@DropdownStyle">
@@ -31,7 +50,7 @@
     [Parameter]
     public List<Verse> verses { get; set; } = new();
     private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
-    private Verse selectedVerse = default!;
+    private Verse? selectedVerse;
     private bool IsDropdownVisible = false;
     private bool IsLoggedIn = false;
     private string DropdownStyle = "";
@@ -63,8 +82,12 @@
     }
 
     private void VerseSelected(Verse verse, MouseEventArgs e){
-        selectedVerse = verse;
-        ShowDropdown(e);
+        if(selectedVerse == verse){
+            selectedVerse = null;
+        }
+        else{
+            selectedVerse = verse;
+        }
     }
     private void ShowDropdown(MouseEventArgs e)
     {
