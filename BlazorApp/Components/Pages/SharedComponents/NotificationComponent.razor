@@ -1,12 +1,12 @@
 <div class="fixed-box">
     @foreach(var tuple in notificationList){
         @if(tuple.Item1){
-            <div class="notification-success ">
+            <div class="notification-success text-center" @onclick="() => DeleteNotification(tuple)">
                 @tuple.Item2
             </div>
         }
         else{
-            <div class="notification-error ">
+            <div class="notification-error text-center" @onclick="() => DeleteNotification(tuple)">
                 @tuple.Item2
             </div>
         }
@@ -16,22 +16,34 @@
 @code{
     private List<Tuple<bool, string>> notificationList = new List<Tuple<bool, string>>();
     public async Task notifyAddition(bool result){
-        Tuple<bool, string> tuple = new (true, "Verse added successfully");
+        Tuple<bool, string> tuple = new (result, "Verse added successfully!");
+        if(result!){
+            tuple = new (result, "Error: Verse not saved");
+        }
         await sendNotification(tuple);
     }
 
     public async Task notifyVerseElimination(bool result){
-        Tuple<bool, string> tuple = new (true, "Verse eliminated successfully");
+        Tuple<bool, string> tuple = new (result, "Verse eliminated successfully!");
+        if(result!){
+            tuple = new (result, "Error: Verse not eliminated");
+        }
         await sendNotification(tuple);
     }
 
     public async Task notifyCollectionElimination(bool result){
-        Tuple<bool, string> tuple = new (true, "Collection eliminated successfully");
+        Tuple<bool, string> tuple = new (result, "Collection eliminated successfully!");
+        if(result!){
+            tuple = new (result, "Error: Collection not eliminated");
+        }
         await sendNotification(tuple);
     }
 
     public async Task notifyCreation(bool result){
-        Tuple<bool, string> tuple = new (true, "Collection created successfully");
+        Tuple<bool, string> tuple = new (result, "Collection created successfully!");
+        if(result!){
+            tuple = new (result, "Error: Collection not created");
+        }
         await sendNotification(tuple);
     }
 
@@ -43,5 +55,9 @@
 
         notificationList.Remove(tuple);
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void DeleteNotification(Tuple<bool, string> tuple){
+        notificationList.Remove(tuple);
     }
 }

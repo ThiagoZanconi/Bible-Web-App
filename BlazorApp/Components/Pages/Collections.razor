@@ -19,6 +19,8 @@
     <DynamicComponent Type="renderedCollections.Type"
                 Parameters="renderedCollections.Parameters" />
 </div>
+
+<NotificationComponent @ref="NotificationRef"></NotificationComponent>
 @code{
     [Inject] 
     private HttpClient Http { get; set; } = default!;
@@ -31,6 +33,7 @@
                 Name = "Log in to see or create collections"
             };
     private Dictionary<string, ComponentMetadata> Components = new();
+    private NotificationComponent? NotificationRef;
     private async void SetComponent(Type e)
     {
         string key = e.Name;
@@ -71,11 +74,20 @@
             {
                 Type = typeof(CreatingCollectionComponent),
                 Name = "Creating Collection",
-                Parameters = 
-                { 
-                    [nameof(CreatingCollectionComponent.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent)
+                Parameters = { 
+                    [nameof(CreatingCollectionComponent.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent),
+                    [nameof(CreatingCollectionComponent.CreateCollectionCallback)] = EventCallback.Factory.Create<string>(this, CreateCollection)
                 }
             };
+    }
+    private async Task CreateCollection(string name){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        bool result = false;
+        if(token!=null){
+            result = await BibleApiService.PostCollectionAsync(token, name);
+        }
+        NotificationRef?.notifyCreation(result);
+        StateHasChanged();
     }
     private async Task FetchCollections(){
         var token = await localStorage.GetItemAsync<string>("jwtToken");

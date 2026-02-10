@@ -1,8 +1,3 @@
-@using System.Net.Http.Headers
-@using BlazorApp.Components.Services
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject IBibleApiService BibleApiService
-
 <div class="text-center mx-auto" >     
     <EditForm Model="@model" OnValidSubmit="@SaveCollection" class="needs-validation"> 
         <DataAnnotationsValidator />
@@ -22,15 +17,14 @@
     </EditForm>   
 </div>
 
-<NotificationComponent @ref="NotificationRef"></NotificationComponent>
 @code{
     [Inject] 
     private HttpClient Http { get; set; } = default!;
-
     [Parameter]
     public EventCallback<Type> OnClickCallback {get; set;}
+    [Parameter]
+    public EventCallback<string> CreateCollectionCallback {get; set;}
     private Model model = new Model();
-    private NotificationComponent? NotificationRef;
     private async void SaveCollection(){
         await CreateCollection(model.Name);
         await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
@@ -39,13 +33,7 @@
         await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
     }
     private async Task CreateCollection(string name){
-        var token = await localStorage.GetItemAsync<string>("jwtToken");
-        bool result = false;
-        if(token!=null){
-            result = await BibleApiService.PostCollectionAsync(token, name);
-        }
-        NotificationRef?.notifyCreation(result);
-        StateHasChanged();
+        await CreateCollectionCallback.InvokeAsync(name);
     }
     private class Model
     {
