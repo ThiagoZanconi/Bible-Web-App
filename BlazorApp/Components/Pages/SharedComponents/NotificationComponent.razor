@@ -1,0 +1,47 @@
+<div class="fixed-box">
+    @foreach(var tuple in notificationList){
+        @if(tuple.Item1){
+            <div class="notification-success ">
+                @tuple.Item2
+            </div>
+        }
+        else{
+            <div class="notification-error ">
+                @tuple.Item2
+            </div>
+        }
+    }
+</div>
+
+@code{
+    private List<Tuple<bool, string>> notificationList = new List<Tuple<bool, string>>();
+    public async Task notifyAddition(bool result){
+        Tuple<bool, string> tuple = new (true, "Verse added successfully");
+        await sendNotification(tuple);
+    }
+
+    public async Task notifyVerseElimination(bool result){
+        Tuple<bool, string> tuple = new (true, "Verse eliminated successfully");
+        await sendNotification(tuple);
+    }
+
+    public async Task notifyCollectionElimination(bool result){
+        Tuple<bool, string> tuple = new (true, "Collection eliminated successfully");
+        await sendNotification(tuple);
+    }
+
+    public async Task notifyCreation(bool result){
+        Tuple<bool, string> tuple = new (true, "Collection created successfully");
+        await sendNotification(tuple);
+    }
+
+    private async Task sendNotification(Tuple<bool, string> tuple){
+        notificationList.Add(tuple);
+        await InvokeAsync(StateHasChanged);
+
+        await Task.Delay(3000);
+
+        notificationList.Remove(tuple);
+        await InvokeAsync(StateHasChanged);
+    }
+}

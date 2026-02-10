@@ -15,8 +15,8 @@ namespace BlazorApp.Components.Services{
         Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
         Task<bool> PostRegister(UserRegister user);
-        Task PostCollectionAsync(string token, string name);
-        Task PostVerseToCollectionAsync(string token, string name, Verse verse);
+        Task<bool> PostCollectionAsync(string token, string name);
+        Task<bool> PostVerseToCollectionAsync(string token, string name, Verse verse);
         Task<bool> DeleteCollectionAsync(string token, string name);
     }
     public class BibleApiService: IBibleApiService{
@@ -195,7 +195,7 @@ namespace BlazorApp.Components.Services{
             return false;
         }
 
-        public async Task PostCollectionAsync(string token, string name){
+        public async Task<bool> PostCollectionAsync(string token, string name){
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}");
@@ -205,6 +205,7 @@ namespace BlazorApp.Components.Services{
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Coleccion creada exitosamente");
+                    return true;
                 }
                 else
                 {
@@ -213,10 +214,10 @@ namespace BlazorApp.Components.Services{
             }catch(Exception e){
                 Console.WriteLine("Error: "+e.Message);
             }
-        
+            return false;
         }
 
-        public async Task PostVerseToCollectionAsync(string token, string name, Verse verse){
+        public async Task<bool> PostVerseToCollectionAsync(string token, string name, Verse verse){
             try{
                 var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}/{verse.bookId}/{verse.chapter}:{verse.vrs}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -225,11 +226,13 @@ namespace BlazorApp.Components.Services{
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Verso agregado a la coleccion exitosamente");
+                    return true;
                 }
             }
             catch(Exception e){
                 Console.WriteLine("Error: "+e.Message);
             }
+            return false;
         }
 
         public async Task<bool> DeleteCollectionAsync(string token, string name){

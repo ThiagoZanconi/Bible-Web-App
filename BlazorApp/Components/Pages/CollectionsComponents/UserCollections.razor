@@ -38,6 +38,7 @@
     </div>
 </div>
 
+<NotificationComponent @ref="NotificationRef"></NotificationComponent>
 @code{
 
     [Inject] 
@@ -48,6 +49,7 @@
     private bool show;
     private string ModalShow => show ? "show d-block" : "";
     private string collectionToDelete = String.Empty;
+    private NotificationComponent? NotificationRef;
 
     private void ToggleModal(){
         show = !show;
@@ -71,10 +73,13 @@
 
     private async Task<bool> DeleteCollectionRequest(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
+        bool toReturn = false;
         if(token!=null){
-            return await BibleApiService.DeleteCollectionAsync(token, name);
+            toReturn = await BibleApiService.DeleteCollectionAsync(token, name);
+
         }
-        return false;
+        NotificationRef?.notifyCollectionElimination(toReturn);
+        return toReturn;
     }
 
     private void NavigateToCollection(string name){

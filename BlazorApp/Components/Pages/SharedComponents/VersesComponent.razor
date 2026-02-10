@@ -19,7 +19,6 @@
                     <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start p-3 w-full" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(verse)">
                         @PrintVerse(verse)
                     </pre>
-                    
                 </div>
                 <div class="px-3 dropdown-menu-custom @(selectedVerse==verse ? "show" : "")">
                     <div class="text-center">
@@ -36,7 +35,6 @@
                         <button class="rounded add-button" @onclick="() => CreateCollection()">New Collection</button>
                     </div>
                 </div>
-                
                 @if (IsLoggedIn && selectedVerse == verse)
                     {
                         <hr>
@@ -45,6 +43,7 @@
         </div>
     }
 </div>
+<NotificationComponent @ref="NotificationRef" ></NotificationComponent>
 
 @code{
     [Parameter]
@@ -53,6 +52,7 @@
     private Verse? selectedVerse;
     private bool IsLoggedIn = false;
     private List<Collection> collections = new();
+    private NotificationComponent? NotificationRef;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender){
@@ -108,7 +108,8 @@
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         Console.WriteLine($"Saving verse {selectedVerse.bookId} {selectedVerse.chapter}:{selectedVerse.vrs} to collection {name}");
         if(token!=null){
-            await BibleApiService.PostVerseToCollectionAsync(token, name, selectedVerse);
+            bool result = await BibleApiService.PostVerseToCollectionAsync(token, name, selectedVerse);
+            NotificationRef?.notifyAddition(result);
         }
     }
     private void CreateCollection(){
