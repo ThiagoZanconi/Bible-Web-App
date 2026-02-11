@@ -1,7 +1,6 @@
 ﻿@page "/"
 @using BlazorApp.Components.Services
 @using BlazorApp.Model
-@using BlazorApp.Components.Pages.HomeComponents
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @implements IAsyncDisposable
@@ -22,7 +21,7 @@
             {
                 <li>
                     <div class="container text-center mt-1 w-50">
-                        <BookButton text=@book.name OnClick="() => FetchChapters(book.id)" />
+                        <button class="wheat-button" onclick="() => FetchChapters(book.id)">@book.name</button>
                     </div>
                     @if (expandedBook.Equals(book.id) && chapters!=null)
                     {

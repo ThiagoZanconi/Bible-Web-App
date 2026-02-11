@@ -5,11 +5,11 @@
 
 <div class="px-5">
     @foreach(string chapter in ChapterVerseDictionary.Keys){
-        <pre class="fs-5 fw-bold text-center background-light-grey p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        <pre class="fs-5 fw-bold text-center p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
             @chapter
         </pre>
         <hr>
-        <div class="my-2 background-light-grey rounded shadow">
+        <div class="my-2 rounded shadow">
             @foreach(Verse verse in ChapterVerseDictionary[chapter]){
                 @if (IsLoggedIn && selectedVerse == verse)
                     {

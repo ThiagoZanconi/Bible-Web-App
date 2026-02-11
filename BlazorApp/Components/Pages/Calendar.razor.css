@@ -3,21 +3,6 @@
     padding-left: 0;
 }
 
-.button{
-    background-color: black;
-    color: #ffffff;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: #000000 0px 0px 5px;
-    transition: all 0.3s ease;
-}
-
-.button:hover{
-    background-color: rgb(21, 248, 21);
-    color: #ffffff;
-    text-shadow: #000000 0px 0px 10px;
-}
-
 .test {
   color: red !important;
 }

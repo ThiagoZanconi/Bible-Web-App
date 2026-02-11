@@ -1,3 +1,37 @@
-.background-black-hover:hover{
+.expand-custom {
+    font-weight: bold;
+    font-size: x-large;
+    padding-right: 5px;
+    padding-left: 5px;
+    color: wheat;
     background-color: black;
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    transition: 
+        max-height 1.4s ease-in-out,
+        background-color 0.7s ease-in-out,
+        color 0.7s ease-in-out,
+        margin 0.4s ease-in-out,
+        padding 0.4s ease-in-out;
+}
+
+.expand-custom.show {
+    max-height: 2000px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.expand-custom:hover{
+    color: black;
+    background-color: wheat;
 }

@@ -6,26 +6,41 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="px-3">
-    <p class="fs-5 fw-bold text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+    <p class="fs-5 fw-bold text-center p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
         @name
     </p>
 </div>
 <div class="px-5 mt-3">
     @foreach(string chapter in ChapterVerseDictionary.Keys){
-        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full mb-3" style="white-space: pre-wrap; word-wrap: break-word;">
+        <pre class="fs-5 fw-light text-center p-3 rounded shadow w-full mb-3" style="white-space: pre-wrap; word-wrap: break-word;">
             @chapter
         </pre>
-        <div class="bg-light p-3 rounded shadow w-full fs-5 fw-light">
-            @foreach(Verse verse in ChapterVerseDictionary[chapter]){
-                <div class="col d-flex justify-content-between">
-                    <pre class="text-start" style="white-space: pre-wrap; word-wrap: break-word;">
-                        @PrintVerse(verse)
-                    </pre>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3 background-black-hover" @onclick="() => DeleteVerseFromCollection(chapter, verse)">
-                            <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
-                        </button>
+        <div class="p-3 rounded shadow w-full fs-5 fw-light">
+            @foreach(var entry in ChapterVerseDictionary[chapter]){
+                <div class="text-center">
+                    <button class="w-50 rounded expand-custom @(selectedVerse==entry.Key && @ShowPrevButton(chapter, entry.Key) ? "show" : "")" @onclick="() => ShowPrevVerse(chapter, entry.Key)">
+                        Show Prev
+                    </button>
+                    <div class="col d-flex justify-content-between">
+                        <pre class="text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(entry.Key)" >
+                            @PrintVerse(entry.Key)
+                        </pre>
+                        <div class="d-flex gap-2">
+                            @if(entry.Value){
+                                <button class="rounded add-button mx-3" @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
+                                    <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                                </button>
+                            }
+                            else{
+                                <button class="rounded add-button mx-3">
+                                    Save
+                                </button>
+                            }
+                        </div>
                     </div>
+                    <button class="w-50 rounded expand-custom @(selectedVerse==entry.Key && @ShowNextButton(chapter, entry.Key) ? "show" : "")" @onclick="() => ShowNextVerse(chapter, entry.Key)">
+                        Show Next
+                    </button>
                 </div>
             }
         </div>
@@ -40,8 +55,9 @@
     [Parameter]
     public string name { get; set; } = String.Empty;
     private List<Verse> verses { get; set; } = new();
-    private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
+    private Dictionary<string, SortedDictionary<Verse, bool>> ChapterVerseDictionary = new Dictionary<string, SortedDictionary<Verse, bool>>();
     private Verse? verseToDelete;
+    private Verse? selectedVerse;
     private string? chapterContainingVerseToDelete;
     private DeleteConfirmationComponent? DeleteRef;
     private NotificationComponent? NotificationRef;
@@ -54,14 +70,17 @@
         }
     }
     private void SetChapters(){
-        verses.Sort((a, b) => a.vrs.CompareTo(b.vrs));
+        //verses.Sort((a, b) => a.vrs.CompareTo(b.vrs));
         foreach(var verse in verses){
+
             var chapter = verse.bookId+" "+verse.chapter;
             if (!ChapterVerseDictionary.ContainsKey(chapter))
             {
-                ChapterVerseDictionary[chapter] = new List<Verse>();
+                ChapterVerseDictionary[chapter] = new SortedDictionary<Verse, bool>(
+                    Comparer<Verse>.Create((a, b) => a.vrs.CompareTo(b.vrs))
+                );
             }
-            ChapterVerseDictionary[chapter].Add(verse);
+            ChapterVerseDictionary[chapter][verse] = true;
         }
     }
     private async Task FetchVerses(){
@@ -69,13 +88,50 @@
         if(token!=null){
             verses = await BibleApiService.GetVerseCollectionAsync(token,name)?? new();
         }
-        
     }
     private string PrintVerse(Verse verse){
         string text="";
         text+=ToSuperscript(verse.vrs)+" ";
         text+=verse.text;
         return text;
+    }
+    private void VerseSelected(Verse verse){
+        if(selectedVerse == verse){
+            selectedVerse = null;
+        }
+        else{
+            selectedVerse = verse;
+        }
+    }
+
+    private bool ShowPrevButton(string chapter, Verse verse){
+        if(ChapterVerseDictionary[chapter].Any(e => verse.vrs!=0 && e.Key.vrs == verse.vrs-1 )){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    private bool ShowNextButton(string chapter, Verse verse){
+        if(ChapterVerseDictionary[chapter].Any(e => e.Key.vrs == verse.vrs+1 )){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    private async Task ShowPrevVerse(string chapter, Verse verse){
+        Verse? next = await BibleApiService.GetVerseAsync(verse.bookId, verse.chapter, verse.vrs-1);
+        if(next!=null){
+            ChapterVerseDictionary[chapter].Add(next, false);
+        }
+    }
+    private async Task ShowNextVerse(string chapter, Verse verse){
+        Verse? next = await BibleApiService.GetVerseAsync(verse.bookId, verse.chapter, verse.vrs+1);
+        if(next!=null){
+            ChapterVerseDictionary[chapter].Add(next, false);
+        }
     }
     private static string ToSuperscript(int number)
     {

@@ -8,6 +8,7 @@ namespace BlazorApp.Components.Services{
         Task<List<Book>?> GetBooksAsync();
         Task<List<Chapter>?> GetChaptersAsync(string book_id);
         Task<List<Verse>?> GetVersesAsync(string book_id, int chapter);
+        Task<Verse?> GetVerseAsync(string book_id, int chapter, int verse);
         Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords);
         Task<List<Verse>?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
         Task<List<Collection>?> GetCollectionsAsync(string token);
@@ -74,6 +75,23 @@ namespace BlazorApp.Components.Services{
                 Console.WriteLine("Error: "+e.Message);
             }
             return null;
+        }
+
+        public async Task<Verse?> GetVerseAsync(string book_id, int chapter, int verse)
+        {
+            try{
+                string lan = tokenState.Languaje;
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/{chapter}:{verse}");
+                var response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<Verse>();  
+                }
+            }
+            catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
+            }
+            return null;   
         }
 
         public async Task<List<Verse>?> GetVersesByKeywordsAsync(string keywords){

@@ -9,19 +9,31 @@
 <div class="px-3">
     <div class="d-flex gap-3 justify-content-center align-items-center mt-3 mb-3">
         <h1> Orthodox Calendar </h1>
-        <button class="button @(calendarName==julian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(julian)"> Julian </button>
-        <button class="button @(calendarName==gregorian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(gregorian)"> Gregorian </button>
+        <div class="md:w-25">
+            <button class="wheat-button @(calendarName==julian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(julian)"> Julian </button>
+        </div>
+        <div class="md:w-25">
+            <button class="wheat-button @(calendarName==gregorian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(gregorian)"> Gregorian </button>
+        </div>
+        
     </div>
     <div class="text-center p-3 m-3 border border-2 border-dark rounded">
         @if (calendarDay != null){
             <div class="d-flex gap-4 justify-content-center mb-3">
-                <button class="button" @onclick= "() => setPreviousDay()">Prev</button>
+
+                <div class="w-25">
+                    <button class="wheat-button" @onclick= "() => setPreviousDay()">Prev</button>
+                </div>
+                
                 <div class="alingn-items-center gap-1 ">
                     <h2>@calendarDay.year, @calendarDay.month, @calendarDay.day </h2>
                     <button class="text-button" @onclick= "() => FetchCalendarToday()">Today</button>
                 </div>
                 
-                <button class="button" @onclick= "() => setNextDay()">Next</button>
+                <div class="w-25">
+                    <button class="wheat-button" @onclick= "() => setNextDay()">Next</button>
+                </div>
+                
             </div>
             @if(calendarDay.titles!=null){
                 @foreach( var title in calendarDay.titles){
