@@ -24,19 +24,7 @@
     </div>
 </div>
 
-<div class="modal fade @ModalShow" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content modal-dialog-centered">
-            <div class="modal-header mx-auto">
-                <h5 class="modal-title text-danger text-center" id="exampleModalLabel">Confirm Delete?</h5>
-            </div>
-            <div class="modal-footer d-flex justify-content-around">
-                <button type="button" class="btn btn-secondary" @onclick="ToggleModal">Cancel</button>
-                <button type="button" class="btn btn-primary" @onclick="ConfirmDelete">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
+<DeleteConfirmationComponent @ref="DeleteRef" ConfirmDeleteCallback="ConfirmDelete"></DeleteConfirmationComponent>
 
 <NotificationComponent @ref="NotificationRef"></NotificationComponent>
 @code{
@@ -46,20 +34,14 @@
 
     [Parameter]
     public List<Collection> collections { get; set; } = new();
-    private bool show;
-    private string ModalShow => show ? "show d-block" : "";
     private string collectionToDelete = String.Empty;
+    private DeleteConfirmationComponent? DeleteRef;
     private NotificationComponent? NotificationRef;
 
-    private void ToggleModal(){
-        show = !show;
-        StateHasChanged();
-    }
     private void DeleteCollection(Collection collection)
     {
         collectionToDelete = collection.name;
-        ToggleModal();
-        StateHasChanged();
+        DeleteRef?.ToggleModal();
     }
     private async void ConfirmDelete()
     {
@@ -68,9 +50,7 @@
             collections.Remove(collections.FirstOrDefault(c => c.name == collectionToDelete)!);
             StateHasChanged();
         }
-        ToggleModal();
     }
-
     private async Task<bool> DeleteCollectionRequest(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
         bool toReturn = false;
@@ -81,7 +61,6 @@
         NotificationRef?.notifyCollectionElimination(toReturn);
         return toReturn;
     }
-
     private void NavigateToCollection(string name){
         Navigation.NavigateTo("/collection/"+name);
     }

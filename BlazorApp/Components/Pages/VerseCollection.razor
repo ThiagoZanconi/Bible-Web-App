@@ -1,4 +1,5 @@
 @page "/collection/{name}"
+@using BlazorApp.Components.Pages.CollectionsComponents
 @using BlazorApp.Components.Services
 @using BlazorApp.Model
 @inject IBibleApiService BibleApiService
@@ -22,7 +23,7 @@
                         @PrintVerse(verse)
                     </pre>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3 background-black-hover" @onclick="() => DeleteVerseFromCollection(verse)">
+                        <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3 background-black-hover" @onclick="() => DeleteVerseFromCollection(chapter, verse)">
                             <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
                         </button>
                     </div>
@@ -33,11 +34,18 @@
     }
 </div>
 
+<DeleteConfirmationComponent @ref="DeleteRef" ConfirmDeleteCallback="ConfirmDelete"></DeleteConfirmationComponent>
+<NotificationComponent @ref="NotificationRef"></NotificationComponent>
+
 @code{
     [Parameter]
     public string name { get; set; } = String.Empty;
     private List<Verse> verses { get; set; } = new();
     private Dictionary<string, List<Verse>> ChapterVerseDictionary = new Dictionary<string, List<Verse>>();
+    private Verse? verseToDelete;
+    private string? chapterContainingVerseToDelete;
+    private DeleteConfirmationComponent? DeleteRef;
+    private NotificationComponent? NotificationRef;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender){
@@ -80,8 +88,33 @@
 
         return new string(number.ToString().Select(d => superscriptDigits[d]).ToArray());
     }
-    private async Task DeleteVerseFromCollection(Verse verse){
+    private void DeleteVerseFromCollection(string chapter, Verse verse){
+        chapterContainingVerseToDelete = chapter;
+        verseToDelete = verse;
+        DeleteRef?.ToggleModal();
+    }
 
+    private async void ConfirmDelete()
+    {
+        bool deletedCollection = await DeleteVerseRequest();
+        if(deletedCollection){
+            verses.Remove(verseToDelete!);
+            ChapterVerseDictionary[chapterContainingVerseToDelete!].Remove(verseToDelete!);
+            if(ChapterVerseDictionary[chapterContainingVerseToDelete!].Count == 0){
+                ChapterVerseDictionary.Remove(chapterContainingVerseToDelete!);
+            }
+            StateHasChanged();
+        }
+    }
+
+    private async Task<bool> DeleteVerseRequest(){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        bool toReturn = false;
+        if(token!=null && verseToDelete!=null){
+            toReturn = await BibleApiService.DeleteVerseFromCollectionAsync(token, name, verseToDelete.bookId, verseToDelete.chapter, verseToDelete.vrs);
+        }
+        NotificationRef?.notifyVerseElimination(toReturn);
+        return toReturn;
     }
 
 }

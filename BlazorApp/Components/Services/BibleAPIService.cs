@@ -18,6 +18,7 @@ namespace BlazorApp.Components.Services{
         Task<bool> PostCollectionAsync(string token, string name);
         Task<bool> PostVerseToCollectionAsync(string token, string name, Verse verse);
         Task<bool> DeleteCollectionAsync(string token, string name);
+        Task<bool> DeleteVerseFromCollectionAsync(string token, string name, string book_id, int chapter, int verse);
     }
     public class BibleApiService: IBibleApiService{
         private readonly HttpClient _httpClient;
@@ -251,7 +252,30 @@ namespace BlazorApp.Components.Services{
                 else
                 {
                     Console.WriteLine($"Error: {response.StatusCode}");
-                    return false;
+                }
+                
+            }catch(Exception e){
+                Console.WriteLine("Error: "+e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteVerseFromCollectionAsync(string token, string name, string book_id, int chapter, int verse)
+        {
+            try{
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"api/collection/{name}/{book_id}/{chapter}/{verse}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Coleccion eliminada exitosamente");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
                 }
                 
             }catch(Exception e){

@@ -17,7 +17,7 @@
     private List<Tuple<bool, string>> notificationList = new List<Tuple<bool, string>>();
     public async Task notifyAddition(bool result){
         Tuple<bool, string> tuple = new (result, "Verse added successfully!");
-        if(result!){
+        if(!result){
             tuple = new (result, "Error: Verse not saved");
         }
         await sendNotification(tuple);
@@ -25,7 +25,7 @@
 
     public async Task notifyVerseElimination(bool result){
         Tuple<bool, string> tuple = new (result, "Verse eliminated successfully!");
-        if(result!){
+        if(!result){
             tuple = new (result, "Error: Verse not eliminated");
         }
         await sendNotification(tuple);
@@ -33,7 +33,7 @@
 
     public async Task notifyCollectionElimination(bool result){
         Tuple<bool, string> tuple = new (result, "Collection eliminated successfully!");
-        if(result!){
+        if(!result){
             tuple = new (result, "Error: Collection not eliminated");
         }
         await sendNotification(tuple);
@@ -41,7 +41,7 @@
 
     public async Task notifyCreation(bool result){
         Tuple<bool, string> tuple = new (result, "Collection created successfully!");
-        if(result!){
+        if(!result){
             tuple = new (result, "Error: Collection not created");
         }
         await sendNotification(tuple);
