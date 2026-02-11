@@ -12,10 +12,9 @@
 </div>
 <div class="px-5 mt-3">
     @foreach(string chapter in ChapterVerseDictionary.Keys){
-        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full m-0" style="white-space: pre-wrap; word-wrap: break-word;">
+        <pre class="fs-5 fw-light text-center bg-light p-3 rounded shadow w-full mb-3" style="white-space: pre-wrap; word-wrap: break-word;">
             @chapter
         </pre>
-        <hr>
         <div class="bg-light p-3 rounded shadow w-full fs-5 fw-light">
             @foreach(Verse verse in ChapterVerseDictionary[chapter]){
                 <div class="col d-flex justify-content-between">
@@ -30,7 +29,7 @@
                 </div>
             }
         </div>
-        <hr> 
+        <hr class="border-4 border-dark"> 
     }
 </div>
 

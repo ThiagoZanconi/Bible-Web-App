@@ -106,7 +106,7 @@
     }
     private async void SaveVerseToCollection(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
-        Console.WriteLine($"Saving verse {selectedVerse.bookId} {selectedVerse.chapter}:{selectedVerse.vrs} to collection {name}");
+        Console.WriteLine($"Saving verse {selectedVerse!.bookId} {selectedVerse.chapter}:{selectedVerse.vrs} to collection {name}");
         if(token!=null){
             bool result = await BibleApiService.PostVerseToCollectionAsync(token, name, selectedVerse);
             NotificationRef?.notifyAddition(result);
