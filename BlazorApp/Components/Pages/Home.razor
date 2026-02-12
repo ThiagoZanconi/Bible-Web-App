@@ -21,7 +21,7 @@
             {
                 <li>
                     <div class="container text-center mt-1 w-50">
-                        <button class="wheat-button" onclick="() => FetchChapters(book.id)">@book.name</button>
+                        <button class="wheat-button" @onclick="() => FetchChapters(book.id)">@book.name</button>
                     </div>
                     @if (expandedBook.Equals(book.id) && chapters!=null)
                     {
@@ -31,18 +31,18 @@
                                 {
                                     int chapterIndex = i;
                                     <div class="col-2 p-1">
-                                        <button @onclick="() => FetchVerses(book.id,chapterIndex)" class="btn btn-outline-secondary w-100">@i</button>
+                                        <button class="btn btn-outline-secondary w-100" @onclick="() => FetchVerses(book.id,chapterIndex)">@i</button>
                                     </div>
                                     @if (expandedChapter == i && verses!=null)
                                     {
                                         <div id="prev_button" class="container w-full text-center mt-2 mb-2">
-                                            <button @onclick="() => SetPrevChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Prev </button>
+                                            <button class="btn btn-outline-secondary w-25 h-full" @onclick="() => SetPrevChapter(book.id,chapterIndex)"> Prev </button>
                                         </div>
 
                                         <VersesComponent verses="verses" @ref="versesComponent"/>
 
                                         <div id="next_button" class="container w-full text-center mt-2 mb-2">
-                                            <button @onclick="() => SetNextChapter(book.id,chapterIndex)" class="btn btn-outline-secondary w-25 h-full"> Next </button>
+                                            <button class="btn btn-outline-secondary w-25 h-full" @onclick="() => SetNextChapter(book.id,chapterIndex)"> Next </button>
                                         </div>
                                     }
                                 }

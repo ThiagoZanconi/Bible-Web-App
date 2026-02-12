@@ -1,8 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using System.IdentityModel.Tokens.Jwt;
+@using BlazorApp.Components.Layout.Components
 @using BlazorApp.Components.Services
 @using BlazorApp.Model
-@using Layout.Components
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime JS
@@ -23,22 +23,21 @@
         </nav>
     }
     <main class="w-100 background-soft-yellow min-vh-100 ">
-        <div class="top-row d-flex justify-content-between px-4 background-black">
-            <div class="navbar navbar-dark">
+        <div class="d-flex justify-content-between background-black align-items-center px-4 py-2 ">
+            <div class="">
                 @if(!expand){
-                    <button class="navbar-toggler" @onclick="ToggleNav">
-                        <span class="navbar-toggler-icon color-white"></span>
+                    <button class="wheat-button" @onclick="ToggleNav">
+                        <img src="images/hamburger-button.png" width="30" height="30" alt="Eliminar">
                     </button>
                 }
             </div>
-            <BlazorApp.Components.Layout.Components.LanguageDropDown></BlazorApp.Components.Layout.Components.LanguageDropDown>
+            <LanguageDropDown></LanguageDropDown>
             <div class="w-10 text-center">
-                <a class="wheat-button underline-on-hover" href="http://localhost:8080/swagger/index.html" target="_blank">API Doc</a>
+                <a class="wheat-button underline-on-hover ml-2" href="http://localhost:8080/swagger/index.html" target="_blank">API Doc</a>
             </div>
-            
         </div>
 
-        <div class="mb-5 mt-3">
+        <div class="mb-3 mt-3">
             @Body
         </div>
     </main>

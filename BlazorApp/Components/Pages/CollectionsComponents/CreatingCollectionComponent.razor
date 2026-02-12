@@ -1,15 +1,15 @@
 <div class="text-center mx-auto" >     
     <EditForm Model="@model" OnValidSubmit="@SaveCollection" class="needs-validation"> 
         <DataAnnotationsValidator />
-        <InputText type="text" class="form-control w-100" required  placeholder="Collection Name" @bind-Value="model.Name" />
-        <div class="d-flex justify-content-center mt-2 px-2">
+        <InputText type="text" class="form-control w-100 mb-2" required  placeholder="Collection Name" @bind-Value="model.Name" />
+        <div class="d-flex justify-content-between">
             <div class="w-75">
-                <button class="w-75 btn btn-danger" @onclick="CancelCollection">
+                <button class="w-75 rounded cancel-button mx-3" @onclick="CancelCollection">
                     Cancel
                 </button>
             </div>
             <div class="w-75">
-                <button type="submit" class="w-75 btn btn-primary">
+                <button type="submit" class="w-75 rounded add-button mx-3">
                     Save
                 </button>
             </div>

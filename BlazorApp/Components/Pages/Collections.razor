@@ -9,13 +9,13 @@
 @inject IBibleApiService BibleApiService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<div class="px-4">
+<div class="text-center px-5 mt-5">
+    <div class="wheat-label mb-5 mx-auto p-3">Collections</div>
     @if (selectedComponent is not null)
     {
             <DynamicComponent Type="selectedComponent.Type"
                 Parameters="selectedComponent.Parameters" />
     }
-
     <DynamicComponent Type="renderedCollections.Type"
                 Parameters="renderedCollections.Parameters" />
 </div>

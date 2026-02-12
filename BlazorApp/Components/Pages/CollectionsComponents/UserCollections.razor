@@ -6,22 +6,20 @@
 @inject NavigationManager Navigation
 @inject IBibleApiService BibleApiService
 
-<div class="container">
-    <div class="row row-cols row-cols-2-md row-cols-3-lg p-3 g-3">
-        @foreach (var collection in collections)
-        {
-            <div class="col d-flex justify-content-between">
-                <button class="border p-5 rounded-3 underline-on-hover w-100 h-100" @onclick="()=>NavigateToCollection(collection.name)">
-                    @collection.name
+<div class="row row-cols row-cols-1 p-3 g-3 mt-5">
+    @foreach (var collection in collections)
+    {
+        <div class="col d-flex justify-content-between">
+            <button class="wheat-button underline-on-hover w-100 h-100" @onclick="()=>NavigateToCollection(collection.name)">
+                @collection.name
+            </button>
+            <div class="d-flex gap-2">
+                <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3" @onclick="() => DeleteCollection(collection)">
+                    <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
                 </button>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-danger-hover d-flex align-items-center p-3 m-3" @onclick="() => DeleteCollection(collection)">
-                        <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
-                    </button>
-                </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
 
 <DeleteConfirmationComponent @ref="DeleteRef" ConfirmDeleteCallback="ConfirmDelete"></DeleteConfirmationComponent>
