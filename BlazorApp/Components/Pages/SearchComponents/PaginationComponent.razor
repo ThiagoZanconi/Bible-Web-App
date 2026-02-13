@@ -1,0 +1,36 @@
+<div class="pagination-container">
+    <pre class="cursor-pointer fs-5 fw-light underline-on-hover color-blue @(0==currentIndex ? "underline" : "")" @onclick="() => SelectedIndex(0)">0</pre>
+    @if(currentIndex>=4){
+        <pre class="color-blue fs-5 fw-light">...</pre>
+    }
+    @foreach(int i in getMiddleIndexes()){
+        <pre class="cursor-pointer fs-5 fw-light underline-on-hover color-blue @(i==currentIndex ? "underline" : "")" @onclick="() => SelectedIndex(i)"> @i </pre>
+    }
+    @if(maxIndex-currentIndex>=3){
+        <pre class="color-blue fs-5 fw-light">...</pre>
+    }
+    @if(maxIndex>0){
+        <pre class="cursor-pointer fs-5 fw-light underline-on-hover color-blue @(maxIndex==currentIndex ? "underline" : "")" @onclick="() => SelectedIndex(maxIndex)"> @maxIndex</pre>
+    }
+</div>
+
+@code{
+    [Parameter]
+    public int currentIndex { get; set; } = 0;
+    [Parameter]
+    public int maxIndex { get; set; } = 0;
+    [Parameter]
+    public EventCallback<int> selectedIndex {get; set;}
+
+    private List<int> getMiddleIndexes(){
+        List<int> toReturn = new List<int>();
+        for(int i= Math.Max(currentIndex-2, 1); i< Math.Min(currentIndex+3, maxIndex); i++){
+            toReturn.Add(i);
+        }
+        return toReturn;  
+    }
+
+    private async Task SelectedIndex(int i){
+        await selectedIndex.InvokeAsync(i);
+    }
+}

@@ -80,6 +80,10 @@ html, body {
     border: none;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 .border-none,
 .border-none:focus,
 .border-none:active {

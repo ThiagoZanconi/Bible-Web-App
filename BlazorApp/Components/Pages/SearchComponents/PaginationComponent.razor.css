@@ -1,0 +1,19 @@
+.color-blue{
+    color: rgb(92, 155, 250);
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+.pagination-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    width: 100%;
+}

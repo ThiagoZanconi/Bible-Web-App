@@ -16,7 +16,7 @@
                         <hr>
                     }
                 <div class="d-flex justify-content-between">
-                    <pre @onclick:stopPropagation class="underline-on-hover fs-5 fw-light text-start p-3 w-full" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(verse)">
+                    <pre @onclick:stopPropagation class="cursor-pointer underline-on-hover fs-5 fw-light text-start p-3 w-full" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(verse)">
                         @PrintVerse(verse)
                     </pre>
                 </div>

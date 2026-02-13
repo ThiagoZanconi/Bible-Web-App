@@ -22,18 +22,18 @@
                         Show Prev
                     </button>
                     <div class="col d-flex justify-content-between">
-                        <pre class="text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(entry.Key)" >
+                        <pre class="cursor-pointer text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(entry.Key)" >
                             @PrintVerse(entry.Key)
                         </pre>
                         <div class="d-flex gap-2">
                             @if(entry.Value){
-                                <button class="rounded add-button mx-3" @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
+                                <button class="rounded cancel-button mx-3" @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
                                     <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
                                 </button>
                             }
                             else{
-                                <button class="rounded add-button mx-3">
-                                    Save
+                                <button class="rounded add-button mx-3" @onclick="() => SaveVerseToCollection(chapter, entry.Key)">
+                                    +
                                 </button>
                             }
                         </div>
@@ -172,4 +172,14 @@
         return toReturn;
     }
 
+    private async Task SaveVerseToCollection(string chapter, Verse v){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        bool success = false;
+        if(token!=null){
+            success = await BibleApiService.PostVerseToCollectionAsync(token, name, v);
+        }
+        NotificationRef?.notifyAddition(success);
+        ChapterVerseDictionary[chapter][v] = success;
+        StateHasChanged(); 
+    }
 }

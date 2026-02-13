@@ -19,4 +19,11 @@ namespace BlazorApp.Model{
         public string text { get; set; } = text;
         public string translationId { get; set; } = translationId;
     }
+
+    public class KeywordSearch
+    {
+        public int index { get; set; } = 0;
+        public int maxIndex { get; set; } = 0;
+        public List<Verse> verses { get; set; } = new List<Verse>();
+    }
 }
