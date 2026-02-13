@@ -32,7 +32,8 @@ html, body {
     margin-bottom: auto;
     padding-left: 25px;
     padding-right: 25px;
-    height: 50px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 
     overflow: hidden;
     transition: 
@@ -54,7 +55,8 @@ html, body {
     margin-bottom: auto;
     padding-left: 25px;
     padding-right: 25px;
-    height: 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
 
     overflow: hidden;
     transition: 
@@ -65,6 +67,29 @@ html, body {
 .cancel-button:hover{
     background-color: rgb(92, 3, 3);
 }
+
+.cancel-button-small{
+    font-weight: bolder;
+    font-size: x-large;
+    align-items: center;
+    color: rgb(240, 237, 233);
+    background-color: rgb(255, 0, 0);
+    border: none;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    overflow: hidden;
+    transition: 
+        background-color 0.7s ease,
+        color 0.7s ease;
+}
+
+.cancel-button-small:hover{
+    background-color: rgb(92, 3, 3);
+}
+
 
 .my-auto{
     margin-top: auto;
@@ -114,7 +139,6 @@ html, body {
 .wheat-label{
     font-weight: bolder;
     font-size: xx-large;
-    text-decoration: underline;
     border-radius: 8px;
     cursor: default;
     color: wheat;
@@ -122,6 +146,20 @@ html, body {
     background-color: black;
     margin-top: auto;
     margin-bottom: auto;
+    padding: 5px;
+}
+
+.wheat-label-small-rectangle{
+    font-weight: bold;
+    font-size: large;
+    cursor: default;
+    color: wheat;
+    width: fit-content;
+    background-color: black;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 5px;
+    min-width: 200px;
 }
 
 .background-black{
