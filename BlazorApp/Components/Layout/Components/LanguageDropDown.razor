@@ -2,16 +2,16 @@
 @inject TokenState TokenState
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<div class="d-flex gap-3">
+<div class="d-flex gap-3 justify-content-center align-items-center">
     <div class="wheat-label">Translation: </div>
     <div class="dropdown my-auto">
-        <button class="wheat-button dropdown-toggle shadow-0" @onclick=ToggleDropdown>
+        <button class="rounded wheat-button dropdown-toggle" @onclick=ToggleDropdown>
             @selectedLanguage
         </button>
         @if(show){
-            <div class="text-center dropdown-custom p-2">
+            <div class="text-center language-dropdown p-2">
                 @foreach(var lan in languages){
-                    <div class="wheat-button text-center" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
+                    <div class="wheat-button text-center" styles="width: 100px;" @onclick="() => SetSelectedLanguage(lan)">@lan</div>
                 }
             </div>
         }

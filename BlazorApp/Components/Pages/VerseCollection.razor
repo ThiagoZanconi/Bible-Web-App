@@ -18,8 +18,9 @@
         <div class="p-3 rounded shadow w-full fs-5 fw-light">
             @foreach(var entry in ChapterVerseDictionary[chapter]){
                 <div class="text-center">
-                    <button class="w-50 rounded expand-custom @(selectedVerse==entry.Key && @ShowPrevButton(chapter, entry.Key) ? "show" : "")" @onclick="() => ShowPrevVerse(chapter, entry.Key)">
-                        Show Prev
+                    <button class="rounded expand-custom @(selectedVerse==entry.Key && @ShowPrevButton(chapter, entry.Key) ? "show" : "")" style="width: 180px;"
+                    @onclick="() => ShowPrevVerse(chapter, entry.Key)">
+                        Prev
                     </button>
                     <div class="col d-flex justify-content-between">
                         <pre class="cursor-pointer text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(entry.Key)" >
@@ -28,7 +29,7 @@
                         <div class="d-flex gap-2">
                             @if(entry.Value){
                                 <button class="rounded cancel-button mx-3" @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
-                                    <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+                                    <img src="images/trash-can.svg" width="25" height="25" alt="Del">
                                 </button>
                             }
                             else{
@@ -38,8 +39,9 @@
                             }
                         </div>
                     </div>
-                    <button class="w-50 rounded expand-custom @(selectedVerse==entry.Key && @ShowNextButton(chapter, entry.Key) ? "show" : "")" @onclick="() => ShowNextVerse(chapter, entry.Key)">
-                        Show Next
+                    <button class="rounded expand-custom @(selectedVerse==entry.Key && @ShowNextButton(chapter, entry.Key) ? "show" : "")" style="width: 180px;"
+                    @onclick="() => ShowNextVerse(chapter, entry.Key)">
+                        Next
                     </button>
                 </div>
             }

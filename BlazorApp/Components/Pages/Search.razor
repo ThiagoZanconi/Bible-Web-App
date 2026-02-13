@@ -9,14 +9,14 @@
     <div >
         <div class="w-100 mx-auto">
             <div class="text-center">
-                <button class="wheat-button dropdown-toggle w-25" @onclick=ToggleDropdown>
+                <button class="rounded wheat-button dropdown-toggle w-25" @onclick=ToggleDropdown>
                     @selectedBook?.name
                 </button>
                 @if(show){
                     <div class="w-75 dropdown-custom">
                         @if(books!=null){
                             @foreach(var book in books){
-                                <div class="text-center wheat-button" @onclick="() => SetSelected(book)">@book.name</div>
+                                <div class="rounded text-center wheat-button" @onclick="() => SetSelected(book)">@book.name</div>
                             }
                         }
                     </div>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="px-2">
-                <div class="row row-cols-5 p-3 gx-1 gy-2 w-75 mx-auto">
+                <div class="row row-cols-5 p-3 gx-2 gy-3 w-75 mx-auto">
                     @foreach(var key in keywords){
                         <div class="d-flex justify-content-center">
                             <div class="rounded d-flex">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="w-50 mx-auto mt-3 mb-3">
-                <button class="w-50 wheat-button" @onclick="SearchVerses">
+                <button class="rounded w-50 wheat-button" @onclick="SearchVerses">
                     Search
                 </button>
             </div>

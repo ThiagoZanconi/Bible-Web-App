@@ -1,0 +1,12 @@
+.language-dropdown{
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    display: grid;
+    gap: 3px;
+    grid-template-columns: repeat(1, 1fr);
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    padding: 5px;
+}

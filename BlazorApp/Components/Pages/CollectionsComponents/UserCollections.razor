@@ -9,13 +9,13 @@
 <div class="row row-cols row-cols-1 p-3 g-3 mt-5">
     @foreach (var collection in collections)
     {
-        <div class="col d-flex justify-content-between">
-            <button class="wheat-button underline-on-hover w-100 h-100" @onclick="()=>NavigateToCollection(collection.name)">
-                @collection.name
-            </button>
-            <div class="d-flex gap-2">
-                <button class="rounded cancel-button d-flex align-items-center p-5 m-3" @onclick="() => DeleteCollection(collection)">
-                    <img src="images/trash-can-icon.svg" width="16" height="16" alt="Eliminar">
+        <div class="d-flex justify-content-center">
+            <div class="rounded d-flex w-75">
+                <button class="rounded-start wheat-button underline-on-hover h-100" style="width: 90%; padding-left: 100px; padding-right: 100px;" @onclick="()=>NavigateToCollection(collection.name)">
+                    @collection.name
+                </button>
+                <button class="rounded-end cancel-button h-100" style="width: 10%;" @onclick="() => DeleteCollection(collection)">
+                    <img src="images/trash-can.svg" width="25" height="25" alt="Eliminar">
                 </button>
             </div>
         </div>

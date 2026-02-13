@@ -21,7 +21,7 @@
             {
                 <li>
                     <div class="container text-center mt-1 w-50">
-                        <button class="wheat-button" @onclick="() => FetchChapters(book.id)">@book.name</button>
+                        <button class="rounded wheat-button" @onclick="() => FetchChapters(book.id)">@book.name</button>
                     </div>
                     @if (expandedBook.Equals(book.id) && chapters!=null)
                     {
