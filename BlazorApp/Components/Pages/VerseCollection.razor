@@ -23,17 +23,20 @@
                         Prev
                     </button>
                     <div class="col d-flex justify-content-between">
-                        <pre class="cursor-pointer text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" @onclick="() => VerseSelected(entry.Key)" >
+                        <pre class="cursor-pointer text-start underline-on-hover my-auto" style="white-space: pre-wrap; word-wrap: break-word;" 
+                        @onclick="() => VerseSelected(entry.Key)" >
                             @PrintVerse(entry.Key)
                         </pre>
                         <div class="d-flex gap-2">
                             @if(entry.Value){
-                                <button class="rounded cancel-button mx-3" @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
+                                <button class="d-flex justify-content-center align-items-center rounded cancel-button mx-3" style="width: 60px; height: 60px;" 
+                                @onclick="() => DeleteVerseFromCollection(chapter, entry.Key)">
                                     <img src="images/trash-can.svg" width="25" height="25" alt="Del">
                                 </button>
                             }
                             else{
-                                <button class="rounded add-button mx-3" @onclick="() => SaveVerseToCollection(chapter, entry.Key)">
+                                <button class="d-flex justify-content-center align-items-center rounded add-button mx-3 fs-2 fw-bold" style="width: 60px; height: 60px;" 
+                                @onclick="() => SaveVerseToCollection(chapter, entry.Key)">
                                     +
                                 </button>
                             }

@@ -11,82 +11,42 @@
 
 <div class="text-center px-5 mt-5">
     <div class="wheat-label mb-5 mx-auto p-3">Collections</div>
-    @if (selectedComponent is not null)
-    {
-            <DynamicComponent Type="selectedComponent.Type"
-                Parameters="selectedComponent.Parameters" />
-    }
+
+    <CreatingCollectionComponent LoggedIn=@loggedIn CreateCollectionCallback="CreateCollection"></CreatingCollectionComponent>
+
     <DynamicComponent Type="renderedCollections.Type"
                 Parameters="renderedCollections.Parameters" />
 </div>
 
 <NotificationComponent @ref="NotificationRef"></NotificationComponent>
 @code{
-    [Inject] 
-    private HttpClient Http { get; set; } = default!;
     private string? token;
+    private bool loggedIn = false;
     private List<Collection>? collections;
-    private ComponentMetadata? selectedComponent;
     private ComponentMetadata renderedCollections {get;set;} = new ComponentMetadata()
             {
                 Type = typeof(CollectionsNotFound),
                 Name = "Log in to see or create collections"
             };
-    private Dictionary<string, ComponentMetadata> Components = new();
     private NotificationComponent? NotificationRef;
-    private async void SetComponent(Type e)
-    {
-        string key = e.Name;
-        if (Components.TryGetValue(key, out var metadata))
-        {
-            selectedComponent = metadata;
-        }
-        else
-        {
-            selectedComponent = null;
-        }
-        await FetchCollections();
-    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender){
             token = await localStorage.GetItemAsync<string>("jwtToken");
-            bool isTokenValid = !string.IsNullOrEmpty(token);
-            InitCreateCollectionButtonComponent(isTokenValid);
-            InitCreatingCollectionComponent();
-            selectedComponent = Components[nameof(CreateCollectionButton)];
+            loggedIn = !string.IsNullOrEmpty(token);
             await FetchCollections();
         }
     }
-    private void InitCreateCollectionButtonComponent(bool loggedIn){
-        Components[nameof(CreateCollectionButton)] = new ComponentMetadata()
-            {
-                Type = typeof(CreateCollectionButton),
-                Name = "Create Collection Button",
-                Parameters = { 
-                    [nameof(CreateCollectionButton.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent),
-                    [nameof(CreateCollectionButton.LoggedIn)] = loggedIn
-                }
-            };
-    }
-    private void InitCreatingCollectionComponent(){
-         Components[nameof(CreatingCollectionComponent)] = new ComponentMetadata()
-            {
-                Type = typeof(CreatingCollectionComponent),
-                Name = "Creating Collection",
-                Parameters = { 
-                    [nameof(CreatingCollectionComponent.OnClickCallback)] = EventCallback.Factory.Create<Type>(this, SetComponent),
-                    [nameof(CreatingCollectionComponent.CreateCollectionCallback)] = EventCallback.Factory.Create<string>(this, CreateCollection)
-                }
-            };
-    }
     private async Task CreateCollection(string name){
         var token = await localStorage.GetItemAsync<string>("jwtToken");
-        bool result = false;
+        Collection? collection = null;
         if(token!=null){
-            result = await BibleApiService.PostCollectionAsync(token, name);
+            collection = await BibleApiService.PostCollectionAsync(token, name);
+            if(collection!=null){
+                collections?.Add(collection);
+            }
         }
-        NotificationRef?.notifyCreation(result);
+        NotificationRef?.notifyCreation(collection!=null);
         StateHasChanged();
     }
     private async Task FetchCollections(){
@@ -103,21 +63,5 @@
                 }
         }
         StateHasChanged(); 
-    }
-    private void LoggedOut(string? token){
-        if(token==null){
-            InitCreateCollectionButtonComponent(false);
-            selectedComponent = Components[nameof(CreateCollectionButton)];
-            Console.WriteLine("Logged Out"); 
-            StateHasChanged();
-        }
-    }
-    protected override void OnInitialized()
-    {
-        TokenState.OnChange += ()=> LoggedOut(TokenState.Token);
-    }
-    public void Dispose()
-    {
-        TokenState.OnChange -= ()=> LoggedOut(TokenState.Token);
     }
 }

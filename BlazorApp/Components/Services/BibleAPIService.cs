@@ -16,7 +16,7 @@ namespace BlazorApp.Components.Services{
         Task<bool> GetValidToken(string token);
         Task<string?> PostLogin(UserLogin user);
         Task<bool> PostRegister(UserRegister user);
-        Task<bool> PostCollectionAsync(string token, string name);
+        Task<Collection?> PostCollectionAsync(string token, string name);
         Task<bool> PostVerseToCollectionAsync(string token, string name, Verse verse);
         Task<bool> DeleteCollectionAsync(string token, string name);
         Task<bool> DeleteVerseFromCollectionAsync(string token, string name, string book_id, int chapter, int verse);
@@ -214,7 +214,7 @@ namespace BlazorApp.Components.Services{
             return false;
         }
 
-        public async Task<bool> PostCollectionAsync(string token, string name){
+        public async Task<Collection?> PostCollectionAsync(string token, string name){
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Post, $"api/collection/{name}");
@@ -224,7 +224,7 @@ namespace BlazorApp.Components.Services{
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Coleccion creada exitosamente");
-                    return true;
+                    return await response.Content.ReadFromJsonAsync<Collection>();  
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace BlazorApp.Components.Services{
             }catch(Exception e){
                 Console.WriteLine("Error: "+e.Message);
             }
-            return false;
+            return null;
         }
 
         public async Task<bool> PostVerseToCollectionAsync(string token, string name, Verse verse){

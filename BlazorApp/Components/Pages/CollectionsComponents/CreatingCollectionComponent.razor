@@ -1,42 +1,62 @@
-<div class="text-center mx-auto" >     
-    <EditForm Model="@model" OnValidSubmit="@SaveCollection" class="needs-validation"> 
-        <DataAnnotationsValidator />
-        <InputText type="text" class="form-control w-100 mb-2" required  placeholder="Collection Name" @bind-Value="model.Name" />
-        <div class="d-flex justify-content-between">
-            <div class="w-75">
-                <button class="w-75 rounded cancel-button mx-3" @onclick="CancelCollection">
+@using System.Threading.Tasks
+@inject NavigationManager Navigation
+
+@if(!CreatingCollection){
+    <button class="rounded add-button mx-auto w-50" @onclick=SetCreatingCollection>New Collection</button>
+}
+else{
+    <div class="text-center mx-auto w-50">     
+        <EditForm Model="@model" OnValidSubmit="@CreateCollection" class="needs-validation"> 
+            <DataAnnotationsValidator />
+            <InputText type="text" class="rounded w-100 fs-5 fw-bold p-3 border-none" required  placeholder="Collection Name" @bind-Value="model.Name"  @onkeydown="EnterPressed"/>
+            <div class="d-flex justify-content-center gap-2 mt-2">
+                <button class="d-flex justify-content-center align-items-center rounded cancel-button mx-3" style="width: 150px; height: 60px;" @onclick="CloseCreatingCollection">
                     Cancel
                 </button>
-            </div>
-            <div class="w-75">
-                <button type="submit" class="w-75 rounded add-button mx-3">
+                <button type="submit" class="d-flex justify-content-center align-items-center rounded add-button mx-3" style="width: 150px; height: 60px;">
                     Save
                 </button>
             </div>
-        </div>
-    </EditForm>   
-</div>
+        </EditForm>   
+    </div>
+}
 
 @code{
-    [Inject] 
-    private HttpClient Http { get; set; } = default!;
-    [Parameter]
-    public EventCallback<Type> OnClickCallback {get; set;}
-    [Parameter]
-    public EventCallback<string> CreateCollectionCallback {get; set;}
-    private Model model = new Model();
-    private async void SaveCollection(){
-        await CreateCollection(model.Name);
-        await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
-    }
-    private async void CancelCollection(){
-        await OnClickCallback.InvokeAsync(typeof(CreateCollectionButton));
-    }
-    private async Task CreateCollection(string name){
-        await CreateCollectionCallback.InvokeAsync(name);
-    }
     private class Model
     {
         public string Name { get; set; } = string.Empty;
+    }
+
+    [Parameter]
+    public bool LoggedIn {get; set;}
+    [Parameter]
+    public EventCallback<string> CreateCollectionCallback {get; set;}
+    public bool CreatingCollection = false;
+    private Model model = new Model();
+    public void SetCreatingCollection()
+    {
+        if(LoggedIn){
+            CreatingCollection = true;
+            StateHasChanged();
+        }
+        else{
+            Navigation.NavigateTo("login");
+        }
+    }
+    private async Task CreateCollection(){
+        await CreateCollectionCallback.InvokeAsync(model.Name);
+        CloseCreatingCollection();
+    }
+    private void CloseCreatingCollection(){
+        model.Name=string.Empty; 
+        CreatingCollection = false;
+        StateHasChanged();
+    }
+    private async Task EnterPressed(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && model.Name!=null && model.Name!=string.Empty)
+        {
+            await CreateCollection();
+        }
     }
 }
