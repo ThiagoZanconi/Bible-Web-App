@@ -30,10 +30,10 @@ html, body {
     border: none;
     margin-top: auto;
     margin-bottom: auto;
-    padding-left: 25px;
-    padding-right: 25px;
     padding-top: 15px;
     padding-bottom: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
 
     overflow: hidden;
     transition: 
@@ -53,10 +53,10 @@ html, body {
     border: none;
     margin-top: auto;
     margin-bottom: auto;
-    padding-left: 25px;
-    padding-right: 25px;
     padding-top: 25px;
     padding-bottom: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
 
     overflow: hidden;
     transition: 
@@ -101,6 +101,44 @@ html, body {
     margin-right: auto;
 }
 
+.px-auto{
+    padding-left: auto;
+    padding-right: auto;
+}
+
+.py-auto{
+    padding-top: auto;
+    padding-bottom: auto;
+}
+
+.responsive-width {
+    width: 100%;
+}
+
+@media (min-width: 450px) {
+    .responsive-width {
+        width: 90%;
+    }
+}
+
+@media (min-width: 600px) {
+    .responsive-width {
+        width: 80%;
+    }
+}
+
+@media (min-width: 750px) {
+    .responsive-width {
+        width: 70%;
+    }
+}
+
+@media (min-width: 900px) {
+    .responsive-width {
+        width: 60%;
+    }
+}
+
 .border-none{
     border: none;
 }
@@ -118,16 +156,19 @@ html, body {
 }
 
 .wheat-button{
+    width: 100%;
     font-weight: bold;
     font-size: x-large;
     outline: none !important;
-    width: 100%;
-    padding: 5px;
     color: wheat;
     background-color: black;
     transition: background-color 0.7s ease, color 0.7s ease;
     margin-top: auto;
     margin-bottom: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .wheat-button:hover{
@@ -149,16 +190,18 @@ html, body {
 }
 
 .wheat-label-small-rectangle{
+    text-align: center;
     font-weight: bold;
     font-size: large;
     cursor: default;
     color: wheat;
-    width: fit-content;
+    width: 130px;
     background-color: black;
     margin-top: auto;
     margin-bottom: auto;
     padding: 5px;
-    min-width: 200px;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .background-black{

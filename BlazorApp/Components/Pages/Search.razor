@@ -33,12 +33,12 @@
             </div>
 
             <div class="px-2">
-                <div class="row row-cols-5 p-3 gx-2 gy-3 w-75 mx-auto">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 p-3 gx-3 gy-3 w-75 mx-auto">
                     @foreach(var key in keywords){
                         <div class="d-flex justify-content-center">
                             <div class="rounded d-flex">
-                                <div class="rounded-start wheat-label-small-rectangle w-100 h-100"> @key </div>
-                                <button class="rounded-end cancel-button-small w-100 h-100" @onclick="() => RemoveKeyword(key)"> 
+                                <div class="rounded-start wheat-label-small-rectangle px-auto h-100"> @key </div>
+                                <button class="rounded-end cancel-button-small px-auto h-100" @onclick="() => RemoveKeyword(key)"> 
                                     <img src="images/trash-can-icon.svg" width="16" height="16" alt="Del">
                                 </button>
                             </div>

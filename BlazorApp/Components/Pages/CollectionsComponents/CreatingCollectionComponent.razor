@@ -2,18 +2,18 @@
 @inject NavigationManager Navigation
 
 @if(!CreatingCollection){
-    <button class="rounded add-button mx-auto w-50" @onclick=SetCreatingCollection>New Collection</button>
+    <button class="rounded add-button responsive-width" @onclick=SetCreatingCollection>New Collection</button>
 }
 else{
-    <div class="text-center mx-auto w-50">     
+    <div class="mx-auto responsive-width">     
         <EditForm Model="@model" OnValidSubmit="@CreateCollection" class="needs-validation"> 
             <DataAnnotationsValidator />
             <InputText type="text" class="rounded w-100 fs-5 fw-bold p-3 border-none" required  placeholder="Collection Name" @bind-Value="model.Name"  @onkeydown="EnterPressed"/>
             <div class="d-flex justify-content-center gap-2 mt-2">
-                <button class="d-flex justify-content-center align-items-center rounded cancel-button mx-3" style="width: 150px; height: 60px;" @onclick="CloseCreatingCollection">
+                <button class="d-flex justify-content-center align-items-center rounded cancel-button mx-3 px-auto" style="width: 50%; height: 60px;" @onclick="CloseCreatingCollection">
                     Cancel
                 </button>
-                <button type="submit" class="d-flex justify-content-center align-items-center rounded add-button mx-3" style="width: 150px; height: 60px;">
+                <button type="submit" class="d-flex justify-content-center align-items-center rounded add-button mx-3 px-auto" style="width: 50%; height: 60px;">
                     Save
                 </button>
             </div>

@@ -7,8 +7,8 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="px-3">
-    <div class="d-flex gap-3 justify-content-center align-items-center mt-3 mb-3">
-        <h1 class="my-auto"> Orthodox Calendar </h1>
+    <div class="wheat-label mx-auto p-3">Orthodox Calendar</div>
+    <div class="d-flex gap-3 justify-content-center align-items-center mt-3 mb-5">
         <div style="width: 200px;" >
             <button class="rounded wheat-button @(calendarName==julian ? "text-decoration-underline" :  "")" @onclick="() => setCalendar(julian)"> Julian </button>
         </div>
@@ -17,6 +17,7 @@
         </div>
         
     </div>
+    <hr />
     <div class="text-center p-3 m-3">
         @if (calendarDay != null){
             <div class="d-flex gap-4 justify-content-center mb-3">

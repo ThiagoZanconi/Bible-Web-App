@@ -17,9 +17,8 @@ namespace BlazorApp.Components.Services{
         
         public async Task<CalendarDay?> GetToday(string cal)
         {
-            var response = await _httpClient.GetAsync($"{cal}");
-
             try{
+                var response = await _httpClient.GetAsync($"{cal}");
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<CalendarDay>();  

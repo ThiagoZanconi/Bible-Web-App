@@ -13,7 +13,7 @@
     @if(expand){
         <nav class="d-flex flex-column flex-shrink-0 text-white bg-dark w-md-25 sidebar">
             <div class="@NavBarClasses" id="navbarNavDropdown">
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end m-3">
                     <button type="button" class="btn-close btn-close-white" aria-label="Close" @onclick="ToggleNav"></button>
                 </div>
                 <NavMenu />
@@ -23,8 +23,8 @@
         </nav>
     }
     <main class="w-100 background-soft-yellow min-vh-100 ">
-        <div class="d-flex justify-content-between background-black align-items-center py-2 " style="padding-left: 10px; padding-right: 10px;"> 
-            <div class="" style="width: 200px;">
+        <div class="d-sm-flex justify-content-sm-between background-black align-items-center py-2 " style="padding-left: 10px; padding-right: 10px;"> 
+            <div class="text-center mx-auto mx-sm-0" style="width: 200px;">
                 @if(!expand){
                     <button class="rounded wheat-button" style="width: 75px;" @onclick="ToggleNav">
                         <img src="images/hamburger-button.png" width="30" height="30" alt="Eliminar">
@@ -32,7 +32,7 @@
                 }
             </div>
             <LanguageDropDown></LanguageDropDown>
-            <div class="text-center" style="width: 200px;">
+            <div class="text-center mx-auto mx-sm-0" style="width: 200px;">
                 <a class="rounded wheat-button underline-on-hover" href="http://localhost:8080/swagger/index.html" target="_blank">API Doc</a>
             </div>
         </div>
