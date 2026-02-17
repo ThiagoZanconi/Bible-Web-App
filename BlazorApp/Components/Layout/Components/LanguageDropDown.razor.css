@@ -1,5 +1,6 @@
 .language-dropdown{
     position: absolute;
+    z-index: 5;
     border: none;
     background-color: transparent;
     display: grid;

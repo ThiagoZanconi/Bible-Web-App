@@ -210,11 +210,9 @@ html, body {
 
 .dropdown-custom{
     position: absolute;
+    z-index: 5;
     border: none;
     background-color: rgb(248, 233, 185);
-    display: grid;
-    gap: 3px;
-    grid-template-columns: repeat(5, 1fr);
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;

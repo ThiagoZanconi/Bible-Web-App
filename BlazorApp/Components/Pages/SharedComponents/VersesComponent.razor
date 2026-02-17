@@ -1,3 +1,4 @@
+@using BlazorApp.Components.Pages.CollectionsComponents
 @using BlazorApp.Components.Services
 @using BlazorApp.Model
 @inject IBibleApiService BibleApiService
@@ -32,7 +33,7 @@
                             </div>  
                         }
                         <hr>
-                        <button class="rounded add-button" @onclick="() => CreateCollection()">New Collection</button>
+                        <CreatingCollectionComponent LoggedIn=@IsLoggedIn CreateCollectionCallback="CreateCollection"></CreatingCollectionComponent>
                     </div>
                 </div>
                 @if (IsLoggedIn && selectedVerse == verse)
@@ -112,8 +113,16 @@
             NotificationRef?.notifyAddition(result);
         }
     }
-    private void CreateCollection(){
-        Console.WriteLine("Create Collection");
+    private async Task CreateCollection(string name){
+        var token = await localStorage.GetItemAsync<string>("jwtToken");
+        Collection? collection = null;
+        if(token!=null){
+            collection = await BibleApiService.PostCollectionAsync(token, name);
+            if(collection!=null){
+                collections?.Add(collection);
+            }
+        }
+        NotificationRef?.notifyCreation(collection!=null);
+        StateHasChanged();
     }
-
 }

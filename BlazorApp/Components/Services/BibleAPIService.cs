@@ -9,8 +9,8 @@ namespace BlazorApp.Components.Services{
         Task<List<Chapter>?> GetChaptersAsync(string book_id);
         Task<List<Verse>?> GetVersesAsync(string book_id, int chapter);
         Task<Verse?> GetVerseAsync(string book_id, int chapter, int verse);
-        Task<KeywordSearch?> GetVersesByKeywordsAsync(string keywords);
-        Task<KeywordSearch?> GetVersesInBookByKeywordsAsync(string book_id, string keywords);
+        Task<KeywordSearch?> GetVersesByKeywordsAsync(string keywords, int index = 0);
+        Task<KeywordSearch?> GetVersesInBookByKeywordsAsync(string book_id, string keywords, int index = 0);
         Task<List<Collection>?> GetCollectionsAsync(string token);
         Task<List<Verse>?> GetVerseCollectionAsync(string token, string name);
         Task<bool> GetValidToken(string token);
@@ -94,10 +94,10 @@ namespace BlazorApp.Components.Services{
             return null;   
         }
 
-        public async Task<KeywordSearch?> GetVersesByKeywordsAsync(string keywords){
+        public async Task<KeywordSearch?> GetVersesByKeywordsAsync(string keywords, int index = 0){
             try{
                 string lan = tokenState.Languaje;
-                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{keywords}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{keywords}/{index}");
                 var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
@@ -110,10 +110,10 @@ namespace BlazorApp.Components.Services{
             return null;
         }
 
-        public async Task<KeywordSearch?> GetVersesInBookByKeywordsAsync(string book_id, string keywords){
+        public async Task<KeywordSearch?> GetVersesInBookByKeywordsAsync(string book_id, string keywords, int index = 0){
             try{
                 string lan = tokenState.Languaje;
-                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}/{index}");
                 var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
