@@ -113,7 +113,7 @@ namespace BlazorApp.Components.Services{
         public async Task<KeywordSearch?> GetVersesInBookByKeywordsAsync(string book_id, string keywords, int index = 0){
             try{
                 string lan = tokenState.Languaje;
-                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/{book_id}/keywords/{keywords}/{index}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/bible/{lan}/keywords/{book_id}/{keywords}/{index}");
                 var response = await _httpClient.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
